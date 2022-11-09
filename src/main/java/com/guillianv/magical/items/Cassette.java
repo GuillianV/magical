@@ -1,10 +1,15 @@
 package com.guillianv.magical.items;
 
-import com.guillianv.magical.entity.animation.bottle.BottleEntity;
 import com.guillianv.magical.entity.ModEntityTypes;
+import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -21,21 +26,26 @@ public class Cassette extends Item {
     }
 
     @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+
+
+
+            FireballEntity fireballEntity = new FireballEntity(ModEntityTypes.FIREBALL.get(),level);
+            fireballEntity.setPos( player.position());
+            fireballEntity.setLookAngle(player.getLookAngle());
+        if (!level.isClientSide()){
+            level.addFreshEntity(fireballEntity);
+        }
+
+
+
+
+        return super.use(level, player, interactionHand);
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
 
-
-        Level level = useOnContext.getLevel();
-        BottleEntity bottleEntity = new BottleEntity(ModEntityTypes.BOTTLE.get(),level);
-        bottleEntity.setPos( useOnContext.getClickLocation());
-        useOnContext.getLevel().addFreshEntity(bottleEntity);
-
-
-
-        if (useOnContext.getClickedFace() == Direction.UP){
-           BlockState blockState = useOnContext.getLevel().getBlockState(useOnContext.getClickedPos());
-           Block block = blockState.getBlock();
-
-        }
 
 
         return super.useOn(useOnContext);

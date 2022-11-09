@@ -108,6 +108,7 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
 
     @Override
     public void tick() {
+
         if (this.tickCount >= animation().animationLength){
             this.onSpellAnimationEnd();
         }

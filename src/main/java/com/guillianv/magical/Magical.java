@@ -4,6 +4,7 @@ import com.guillianv.magical.blocks.ModBlocks;
 import com.guillianv.magical.blocks.entity.ModBlockEntities;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.bottle.render.BottleRenderer;
+import com.guillianv.magical.entity.animation.fireball.render.FireballRenderer;
 import com.guillianv.magical.items.ModItems;
 import com.guillianv.magical.screen.ModMenuTypes;
 import com.guillianv.magical.screen.VinyleScreen;
@@ -69,7 +70,9 @@ public class Magical
         {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             MenuScreens.register(ModMenuTypes.VINYLE_MENU.get(), VinyleScreen::new);
+
             EntityRenderers.register(ModEntityTypes.BOTTLE.get(), BottleRenderer::new);
+            EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
         }
     }
 }

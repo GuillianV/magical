@@ -1,0 +1,44 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.fireball",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "fireball",
+					"pivot": [1, 5.5, 0],
+					"cubes": [
+						{"origin": [-4, 5, -4], "size": [8, 1, 8], "uv": [0, 18]},
+						{"origin": [4, 5, -3], "size": [1, 1, 6], "uv": [14, 34]},
+						{"origin": [-5, 5, -3], "size": [1, 1, 6], "uv": [0, 34]},
+						{"origin": [-3, 5, -5], "size": [6, 1, 1], "uv": [27, 40]},
+						{"origin": [-3, 5, 4], "size": [6, 1, 1], "uv": [38, 36]},
+						{"origin": [-4, 4, -4], "size": [8, 1, 8], "uv": [0, 0]},
+						{"origin": [-4, 6, -4], "size": [8, 1, 8], "uv": [0, 9]},
+						{"origin": [-3, 8, -3], "size": [6, 1, 6], "uv": [26, 25]},
+						{"origin": [-3, 2, -3], "size": [6, 1, 6], "uv": [24, 18]},
+						{"origin": [-3, 7, -3], "size": [6, 1, 6], "uv": [24, 9]},
+						{"origin": [-3, 3, 3], "size": [6, 1, 1], "uv": [32, 7]},
+						{"origin": [-3, 3, -4], "size": [6, 1, 1], "uv": [32, 16]},
+						{"origin": [3, 3, -3], "size": [1, 1, 6], "uv": [0, 27]},
+						{"origin": [-4, 3, -3], "size": [1, 1, 6], "uv": [14, 27]},
+						{"origin": [-3, 3, -3], "size": [6, 1, 6], "uv": [24, 0]},
+						{"origin": [-4, 7, -3], "size": [1, 1, 6], "uv": [30, 33]},
+						{"origin": [3, 7, -3], "size": [1, 1, 6], "uv": [22, 32]},
+						{"origin": [-3, 7, -4], "size": [6, 1, 1], "uv": [38, 34]},
+						{"origin": [-3, 7, 3], "size": [6, 1, 1], "uv": [38, 32]},
+						{"origin": [-1, 9, -1], "size": [2, 1, 2], "uv": [0, 3]},
+						{"origin": [-1, 1, -1], "size": [2, 1, 2], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}
