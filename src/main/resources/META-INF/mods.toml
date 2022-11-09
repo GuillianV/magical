@@ -1,0 +1,27 @@
+modLoader="javafml" #mandatory
+loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+[[mods]] #mandatory
+modId="magical" #mandatory
+version="${file.jarVersion}"
+displayName="Magical"
+logoFile="magical.png" #optional
+credits="Thanks to TurtyWurty and Kaupenjoe for their moddings tutorials" #optional
+authors="Guillian Vibert-Vallet" #optional
+description='''
+Magical mod, with infinite spell scaling
+'''
+[[dependencies.magical]]
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[43,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+# Here's another dependency
+[[dependencies.magical]]
+    modId="minecraft"
+    mandatory=true
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"
