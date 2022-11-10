@@ -16,13 +16,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ExplosionDamageCalculator;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.DataLayer;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -36,12 +36,19 @@ import java.util.Random;
 public class FireballEntity extends SpellEntity {
 
 
-    private double speed = 1;
-    Random rand = new Random();
+    private double speed = 2;
+    private float explosionRadius = 2f;
+    private float particlesSmokeRadius = 0.5f;
+    private float particlesSmokeRadiusPerTick = 0.5f;
+    private int particlesSmokeDuration = 1;
+    private float entityDamageDealth= 3;
+    private int expirationTime = 80;
 
 
-    BlockPos oldPos = new  BlockPos(Vec3.ZERO);
-    BlockPos oldPos2 = new  BlockPos(Vec3.ZERO);
+
+    private Random rand = new Random();
+    private BlockPos oldPos = new  BlockPos(Vec3.ZERO);
+    private BlockPos oldPos2 = new  BlockPos(Vec3.ZERO);
 
 
     private static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_X = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
@@ -96,7 +103,7 @@ public class FireballEntity extends SpellEntity {
 
     private void fireBallExplode(Level level){
         Player player = level.players().get(getSender());
-        level.explode(player, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(),2f,true, Explosion.BlockInteraction.BREAK);
+        level.explode(player, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(),explosionRadius,true, Explosion.BlockInteraction.BREAK);
         this.remove(RemovalReason.DISCARDED);
     }
 
@@ -105,8 +112,11 @@ public class FireballEntity extends SpellEntity {
 
         if (level.isClientSide()){
             LevelLightEngine levelLightEngine =  level.getLightEngine();
-            levelLightEngine.checkBlock(oldPos);
-            levelLightEngine.checkBlock(oldPos2);
+            LevelChunk levelChunk = level.getChunkAt(oldPos);
+            if (levelChunk.isClientLightReady()){
+                levelLightEngine.checkBlock(oldPos);
+                levelLightEngine.checkBlock(oldPos2);
+            }
 
         }
         super.remove(removalReason);
@@ -120,9 +130,9 @@ public class FireballEntity extends SpellEntity {
 
         AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY()+this.getEyeHeight(), this.getZ());
         areaeffectcloud.setParticle(ParticleTypes.LARGE_SMOKE);
-        areaeffectcloud.setRadius(0.5f);
-        areaeffectcloud.setRadiusPerTick(0.5f);
-        areaeffectcloud.setDuration(1);
+        areaeffectcloud.setRadius(particlesSmokeRadius);
+        areaeffectcloud.setRadiusPerTick(particlesSmokeRadiusPerTick);
+        areaeffectcloud.setDuration(particlesSmokeDuration);
         level.addParticle(ParticleTypes.FLAME,this.getX(),this.getY()+this.getEyeHeight(),this.getZ(),rand.nextDouble(0.1),rand.nextDouble(0.1),rand.nextDouble(0.1));
         level.addFreshEntity(areaeffectcloud);
 
@@ -139,22 +149,26 @@ public class FireballEntity extends SpellEntity {
         Entity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT,this,getX(),getY(),getZ(),getBoundingBox());
         if (entity!=null){
             fireBallExplode(level);
-            entity.hurt(DamageSource.MAGIC,1);
+            entity.hurt(DamageSource.MAGIC,entityDamageDealth);
             return;
         }
 
         this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  this.getLookAngle().y * speed, this.getZ() + this.getLookAngle().z * speed);
-        if (this.tickCount > 80){
+        if (this.tickCount > expirationTime){
             fireBallExplode(level);
             return;
         }
 
 
         if (level.isClientSide()){
-            BlockPos closestPos = new BlockPos(this.position().x,this.position().y,this.position().z);
+            BlockPos closestPos = new BlockPos(this.position().x + getLookAngle().x,this.position().y+ getLookAngle().y,this.position().z+ getLookAngle().z);
             LevelLightEngine levelLightEngine =  level.getLightEngine();
-            levelLightEngine.onBlockEmissionIncrease(closestPos,25);
-            levelLightEngine.checkBlock(oldPos2);
+            LevelChunk levelChunk = level.getChunkAt(closestPos);
+            DataLayer datalayer = levelLightEngine.getLayerListener(LightLayer.BLOCK).getDataLayerData(SectionPos.of(levelChunk.getPos(), 0));
+            if (datalayer != null && !levelChunk.isUpgrading() && levelChunk.getStatus() == ChunkStatus.FULL &&  levelChunk.isClientLightReady()){
+                levelLightEngine.onBlockEmissionIncrease(closestPos,25);
+                levelLightEngine.checkBlock(oldPos2);
+            }
 
             oldPos2 = oldPos;
             oldPos = closestPos;
