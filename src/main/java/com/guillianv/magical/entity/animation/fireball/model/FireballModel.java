@@ -15,6 +15,8 @@ public class FireballModel extends AnimatedGeoModel<FireballEntity> {
 		return new ResourceLocation(Magical.MOD_ID, "geo/fireball.geo.json");
 	}
 
+
+
 	@Override
 	public ResourceLocation getTextureResource(FireballEntity object) {
 		return new ResourceLocation(Magical.MOD_ID, "textures/entity/fireball_texture.png");

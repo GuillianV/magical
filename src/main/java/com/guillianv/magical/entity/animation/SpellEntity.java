@@ -1,5 +1,11 @@
 package com.guillianv.magical.entity.animation;
 
+import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -10,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -26,6 +33,10 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     public  AnimationFactory  factory = GeckoLibUtil.createFactory(this);
     public abstract AnimationBuilder builder() ;
     public abstract  Animation animation();
+
+    private static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.INT);
+
+
 
     protected float scale = 1f;
 
@@ -99,12 +110,34 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
 
     }
 
+    public void setSenderId(int playerId){
+        this.getEntityData().set(DATA_SENDER_ID, playerId);
+    }
+
+    public int getSender(){
+       return this.getEntityData().get(DATA_SENDER_ID);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(DATA_SENDER_ID, 0);
+    }
 
     @Override
     public HumanoidArm getMainArm() {
         return HumanoidArm.LEFT;
     }
 
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+        return true;
+    }
+
+    @Override
+    public boolean isInvulnerable() {
+        return true;
+    }
 
     @Override
     public void tick() {
