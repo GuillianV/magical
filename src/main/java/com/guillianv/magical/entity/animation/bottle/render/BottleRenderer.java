@@ -19,6 +19,7 @@ public class BottleRenderer extends GeoEntityRenderer<BottleEntity> {
     public BottleRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BottleModel());
         this.shadowRadius = 0.15f;
+
     }
 
 

@@ -20,6 +20,8 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> VINYLE = registerBlock("vinyle",()-> new Vinyle(BlockBehaviour.Properties.of(Material.STONE).noOcclusion()),CreativeModeTab.TAB_BUILDING_BLOCKS);
 
+
+
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);
         registerBlockItem(name, toReturn,tab);
