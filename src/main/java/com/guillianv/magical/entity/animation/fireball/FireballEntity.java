@@ -157,24 +157,7 @@ public class FireballEntity extends SpellEntity {
         }
 
 
-<<<<<<< HEAD
-        if (level.isClientSide()){
-            BlockPos closestPos = new BlockPos(this.position().x + getLookAngle().x,this.position().y+ getLookAngle().y,this.position().z+ getLookAngle().z);
-            LevelLightEngine levelLightEngine =  level.getLightEngine();
-            LevelChunk levelChunk = level.getChunkAt(closestPos);
-            DataLayer datalayer = levelLightEngine.getLayerListener(LightLayer.BLOCK).getDataLayerData(SectionPos.of(levelChunk.getPos(), 0));
-            if (datalayer == null && !levelChunk.isUpgrading() && levelChunk.getStatus() == ChunkStatus.FULL &&  levelChunk.isClientLightReady()){
-                levelLightEngine.onBlockEmissionIncrease(closestPos,25);
-                levelLightEngine.checkBlock(oldPos2);
-            }
 
-            oldPos2 = oldPos;
-            oldPos = closestPos;
-
-        }
-
-=======
->>>>>>> 293aa1cef4998250b57e7bfbfd5a90a25e733ff4
 
     }
 

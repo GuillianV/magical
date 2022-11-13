@@ -29,14 +29,27 @@ public class Wand extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
-        FireballEntity fireballEntity = new FireballEntity(ModEntityTypes.FIREBALL.get(),level);
+      /*  FireballEntity fireballEntity = new FireballEntity(ModEntityTypes.FIREBALL.get(),level);
         fireballEntity.setPos( new Vec3(player.position().x,player.position().y + player.getEyeHeight(),player.position().z));
         fireballEntity.setLookAngle(player.getLookAngle());
         if (!level.isClientSide()){
            level.addFreshEntity(fireballEntity);
-        }
+        } */
 
         return super.use(level, player, interactionHand);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext useOnContext) {
+
+        BottleEntity bottleEntity = new BottleEntity(ModEntityTypes.BOTTLE.get(),useOnContext.getLevel());
+        bottleEntity.setPos( new Vec3(useOnContext.getClickedPos().getX(),useOnContext.getClickedPos().getY() ,useOnContext.getClickedPos().getZ()));
+        if (!useOnContext.getLevel().isClientSide()){
+            useOnContext.getLevel().addFreshEntity(bottleEntity);
+        }
+
+
+        return super.useOn(useOnContext);
     }
 
 }
