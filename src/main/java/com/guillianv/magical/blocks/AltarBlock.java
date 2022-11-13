@@ -1,7 +1,7 @@
 package com.guillianv.magical.blocks;
 
 import com.guillianv.magical.blocks.entity.ModBlockEntities;
-import com.guillianv.magical.blocks.entity.VinyleEntity;
+import com.guillianv.magical.blocks.entity.AltarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -23,9 +23,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class Vinyle extends BaseEntityBlock {
+public class AltarBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Block.box(0,0,0,16,8,16);
+    private static final VoxelShape SHAPE = Block.box(0,0,0,16,7,16);
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
@@ -40,7 +40,7 @@ public class Vinyle extends BaseEntityBlock {
         return SHAPE;
     }
 
-    public Vinyle(Properties properties) {
+    public AltarBlock(Properties properties) {
         super(properties);
     }
 
@@ -49,15 +49,22 @@ public class Vinyle extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState p_49232_) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
+        return ModBlockEntities.ALTAR.get().create(pos,blockState);
+    }
+
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockStateNew, boolean pIsMoving) {
         if (blockState.getBlock() != blockStateNew.getBlock()){
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof VinyleEntity){
-                ((VinyleEntity)blockEntity).drops();
+            if (blockEntity instanceof AltarBlockEntity){
+                ((AltarBlockEntity)blockEntity).drops();
             }
 
         }
@@ -69,8 +76,8 @@ public class Vinyle extends BaseEntityBlock {
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof VinyleEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (VinyleEntity)entity, pPos);
+            if(entity instanceof AltarBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (AltarBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -79,19 +86,11 @@ public class Vinyle extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
-        return new VinyleEntity(pos,blockState);
-    }
 
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
-        return createTickerHelper(type,  ModBlockEntities.VINYLE.get(),VinyleEntity::tick);
+        return createTickerHelper(type,  ModBlockEntities.ALTAR.get(), AltarBlockEntity::tick);
     }
-
-
-
 }

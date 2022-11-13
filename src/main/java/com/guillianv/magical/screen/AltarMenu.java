@@ -2,7 +2,7 @@ package com.guillianv.magical.screen;
 
 
 import com.guillianv.magical.blocks.ModBlocks;
-import com.guillianv.magical.blocks.entity.VinyleEntity;
+import com.guillianv.magical.blocks.entity.AltarBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,19 +14,19 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 
-public class VinyleMenu extends AbstractContainerMenu {
-    public final VinyleEntity blockEntity;
+public class AltarMenu extends AbstractContainerMenu {
+    public final AltarBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public VinyleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public AltarMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(0));
     }
 
-    public VinyleMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.VINYLE_MENU.get(), id);
+    public AltarMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.ALTAR_MENU.get(), id);
         checkContainerSize(inv, 1);
-        blockEntity = (VinyleEntity) entity;
+        blockEntity = (AltarBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
 
@@ -115,6 +115,6 @@ public class VinyleMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, ModBlocks.VINYLE.get());
+                player, ModBlocks.ALTAR.get());
     }
 }

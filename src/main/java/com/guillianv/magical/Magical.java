@@ -2,16 +2,18 @@ package com.guillianv.magical;
 
 import com.guillianv.magical.blocks.ModBlocks;
 import com.guillianv.magical.blocks.entity.ModBlockEntities;
+import com.guillianv.magical.blocks.render.AltarBlockRenderer;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.bottle.render.BottleRenderer;
 import com.guillianv.magical.entity.animation.fireball.render.FireballRenderer;
 import com.guillianv.magical.items.ModItems;
 import com.guillianv.magical.screen.ModMenuTypes;
-import com.guillianv.magical.screen.VinyleScreen;
+import com.guillianv.magical.screen.AltarScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -62,17 +64,4 @@ public class Magical
         LOGGER.info("HELLO from server starting");
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            MenuScreens.register(ModMenuTypes.VINYLE_MENU.get(), VinyleScreen::new);
-
-            EntityRenderers.register(ModEntityTypes.BOTTLE.get(), BottleRenderer::new);
-            EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
-        }
-    }
 }

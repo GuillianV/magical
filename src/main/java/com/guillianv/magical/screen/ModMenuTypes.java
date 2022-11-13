@@ -13,8 +13,8 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, Magical.MOD_ID);
 
-    public static final RegistryObject<MenuType<VinyleMenu>> VINYLE_MENU =
-            registerMenuType(VinyleMenu::new, "vinyle_menu");
+    public static final RegistryObject<MenuType<AltarMenu>> ALTAR_MENU =
+            registerMenuType(AltarMenu::new, "altar_menu");
 
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,

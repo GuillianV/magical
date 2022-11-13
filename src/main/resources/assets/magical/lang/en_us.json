@@ -1,4 +1,7 @@
 {
-  "item.magical.myitem" : "Cassette",
-  "block.magical.vinyle" : "Vinyle"
+  "item.magical.wand_normal" : "Magical Wand",
+  "block.magical.altar" : "Altar",
+
+
+  "itemGroup.magical_tab": "Magical"
 }

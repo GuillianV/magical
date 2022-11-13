@@ -1,7 +1,6 @@
 package com.guillianv.magical.blocks.entity;
 
-import com.guillianv.magical.items.ModItems;
-import com.guillianv.magical.screen.VinyleMenu;
+import com.guillianv.magical.screen.AltarMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,8 +23,17 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class VinyleEntity extends BlockEntity implements MenuProvider {
+public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnimatable {
 
     protected final ContainerData data;
 
@@ -37,10 +45,9 @@ public class VinyleEntity extends BlockEntity implements MenuProvider {
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if (stack.getItem() == ModItems.MYITEM.get()){
+
                 return true;
-            }else
-                return false;
+
 
         }
 
@@ -51,8 +58,8 @@ public class VinyleEntity extends BlockEntity implements MenuProvider {
     };
 
 
-    public VinyleEntity( BlockPos blockPos, BlockState blockState) {
-        super(ModBlockEntities.VINYLE.get(), blockPos, blockState);
+    public AltarBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(ModBlockEntities.ALTAR.get(), blockPos, blockState);
 
         data = new ContainerData() {
             @Override
@@ -82,7 +89,7 @@ public class VinyleEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new VinyleMenu(id,inventory,this,this.data);
+        return new AltarMenu(id,inventory,this,this.data);
     }
 
     //Called when opening entity
@@ -138,10 +145,30 @@ public class VinyleEntity extends BlockEntity implements MenuProvider {
     }
 
     //On each tick
-    public static void tick(Level level, BlockPos pos, BlockState state, VinyleEntity pEntity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, AltarBlockEntity pEntity) {
         if(level.isClientSide()) {
             return;
         }
 
+    }
+
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<AltarBlockEntity>
+                (this, "controller", 0, this::predicate));
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        AnimationBuilder animationBuilder =  new AnimationBuilder().addAnimation("animation.altar.play", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+        event.getController().setAnimation(animationBuilder);
+
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }

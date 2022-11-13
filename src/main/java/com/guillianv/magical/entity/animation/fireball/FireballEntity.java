@@ -36,7 +36,7 @@ import java.util.Random;
 public class FireballEntity extends SpellEntity {
 
 
-    private double speed = 2;
+    private double speed = 1;
     private float explosionRadius = 2f;
     private float particlesSmokeRadius = 0.5f;
     private float particlesSmokeRadiusPerTick = 0.5f;
@@ -165,7 +165,7 @@ public class FireballEntity extends SpellEntity {
             LevelLightEngine levelLightEngine =  level.getLightEngine();
             LevelChunk levelChunk = level.getChunkAt(closestPos);
             DataLayer datalayer = levelLightEngine.getLayerListener(LightLayer.BLOCK).getDataLayerData(SectionPos.of(levelChunk.getPos(), 0));
-            if (datalayer != null && !levelChunk.isUpgrading() && levelChunk.getStatus() == ChunkStatus.FULL &&  levelChunk.isClientLightReady()){
+            if (datalayer == null && !levelChunk.isUpgrading() && levelChunk.getStatus() == ChunkStatus.FULL &&  levelChunk.isClientLightReady()){
                 levelLightEngine.onBlockEmissionIncrease(closestPos,25);
                 levelLightEngine.checkBlock(oldPos2);
             }

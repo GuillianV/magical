@@ -9,13 +9,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class VinyleScreen extends AbstractContainerScreen<VinyleMenu> {
+public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
 
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Magical.MOD_ID,"textures/gui/vinyle_gui.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Magical.MOD_ID,"textures/gui/altar_gui.png");
 
-    public VinyleScreen(VinyleMenu vinyleMenu, Inventory inventory, Component component) {
-        super(vinyleMenu, inventory, component);
+    public AltarScreen(AltarMenu altarMenu, Inventory inventory, Component component) {
+        super(altarMenu, inventory, component);
     }
 
     @Override

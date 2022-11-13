@@ -1,6 +1,7 @@
 package com.guillianv.magical.items;
 
 import com.guillianv.magical.Magical;
+import com.guillianv.magical.tabs.ModCreativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,6 +16,8 @@ public class ModItems {
         ITEMS.register(bus);
     }
 
-    public static final RegistryObject<Item> MYITEM = ITEMS.register("myitem",() -> new Cassette(new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
+
+    public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB)));
+
 
 }

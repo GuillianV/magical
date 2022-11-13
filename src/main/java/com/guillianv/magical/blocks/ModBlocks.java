@@ -2,6 +2,7 @@ package com.guillianv.magical.blocks;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.items.ModItems;
+import com.guillianv.magical.tabs.ModCreativeTabs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -18,7 +19,10 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public final static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Magical.MOD_ID);
 
-    public static final RegistryObject<Block> VINYLE = registerBlock("vinyle",()-> new Vinyle(BlockBehaviour.Properties.of(Material.STONE).noOcclusion()),CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final RegistryObject<Block> ALTAR = registerBlock("altar",()-> new AltarBlock(BlockBehaviour.Properties.of(Material.STONE).noOcclusion()), ModCreativeTabs.MAGICAL_TAB);
+
+
+
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);

@@ -12,7 +12,9 @@ public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Magical.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<VinyleEntity>> VINYLE = BLOCK_ENTITY_TYPE.register("vinyle", ()-> BlockEntityType.Builder.of(VinyleEntity::new, ModBlocks.VINYLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<AltarBlockEntity>> ALTAR = BLOCK_ENTITY_TYPE.register("altar", ()-> BlockEntityType.Builder.of(AltarBlockEntity::new, ModBlocks.ALTAR.get()).build(null));
+
+
     public static void register(IEventBus bus){
         BLOCK_ENTITY_TYPE.register(bus);
     }
