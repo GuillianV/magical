@@ -1,5 +1,7 @@
 package com.guillianv.magical.blocks.entity;
 
+import com.guillianv.magical.items.Scroll;
+import com.guillianv.magical.items.Wand;
 import com.guillianv.magical.screen.AltarMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -37,16 +40,30 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
     protected final ContainerData data;
 
-
+    public boolean canCraft = false;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1){
+    private final ItemStackHandler itemHandler = new ItemStackHandler(3){
+
 
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
 
-                return true;
+            switch (slot){
+                case 0:
+                    if (stack.getItem() instanceof Wand)
+                        return true;
+                    break;
+                case 1 :
+                    if (stack.getItem() instanceof Scroll)
+                        return true;
+                case 2:
+                    return false;
+
+            }
+
+                return false;
 
 
         }
@@ -64,17 +81,23 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
         data = new ContainerData() {
             @Override
             public int get(int index) {
-                return 0;
+                switch (index) {
+                    case 0: return ( AltarBlockEntity.this.canCraft) ? 1 : 0;
+                    default: return 0;
+                }
             }
 
             @Override
             public void set(int index, int value) {
+                switch(index) {
+                    case 0: AltarBlockEntity.this.canCraft = value == 1 ; break;
+                }
 
             }
 
             @Override
             public int getCount() {
-                return 0;
+                return 1;
             }
         };
 
@@ -83,7 +106,7 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Tourne disque");
+        return Component.literal("Altar");
     }
 
     @Nullable
@@ -146,9 +169,23 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
     //On each tick
     public static void tick(Level level, BlockPos pos, BlockState state, AltarBlockEntity pEntity) {
-        if(level.isClientSide()) {
-            return;
+
+        Wand wand = null;
+        if (pEntity.itemHandler.getStackInSlot(0).getItem() instanceof Wand)
+            wand = (Wand) pEntity.itemHandler.getStackInSlot(0).getItem();
+
+        Scroll scroll = null;
+        if (pEntity.itemHandler.getStackInSlot(1).getItem() instanceof Scroll)
+            scroll = (Scroll) pEntity.itemHandler.getStackInSlot(1).getItem();
+
+
+        if (scroll == null || wand == null){
+            pEntity.data.set(0,0);
+        }else {
+            pEntity.data.set(0,1);
         }
+
+
 
     }
 

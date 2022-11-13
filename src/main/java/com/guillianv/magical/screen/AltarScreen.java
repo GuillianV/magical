@@ -33,6 +33,9 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
+        if (this.menu.blockEntity.canCraft){
+            this.blit(pPoseStack, x + 87, y +35, 176, 0, 23, 13);
+        }
     }
 
     @Override

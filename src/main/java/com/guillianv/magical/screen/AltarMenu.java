@@ -20,12 +20,12 @@ public class AltarMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public AltarMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(0));
+        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
     public AltarMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.ALTAR_MENU.get(), id);
-        checkContainerSize(inv, 1);
+        checkContainerSize(inv, 3);
         blockEntity = (AltarBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
@@ -34,23 +34,18 @@ public class AltarMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 124, 23));
+            this.addSlot(new SlotItemHandler(handler, 0, 26, 34));
+            this.addSlot(new SlotItemHandler(handler, 1, 62, 34));
+            this.addSlot(new SlotItemHandler(handler, 2, 116, 34));
         });
 
 
 
     }
 
-    public boolean isCrafting() {
-        return data.get(0) > 0;
-    }
 
-    public int getScaledProgress() {
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 26; // This is the height in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    public boolean canCraft() {
+        return data.get(0) == 1;
     }
 
 
@@ -77,7 +72,7 @@ public class AltarMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 1;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
