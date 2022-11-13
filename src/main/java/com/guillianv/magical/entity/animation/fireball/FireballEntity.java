@@ -24,14 +24,21 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
+import java.io.Console;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class FireballEntity extends SpellEntity {
 
@@ -47,8 +54,6 @@ public class FireballEntity extends SpellEntity {
 
 
     private Random rand = new Random();
-    private BlockPos oldPos = new  BlockPos(Vec3.ZERO);
-    private BlockPos oldPos2 = new  BlockPos(Vec3.ZERO);
 
 
     private static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_X = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
@@ -110,15 +115,6 @@ public class FireballEntity extends SpellEntity {
     @Override
     public void remove(RemovalReason removalReason) {
 
-        if (level.isClientSide()){
-            LevelLightEngine levelLightEngine =  level.getLightEngine();
-            LevelChunk levelChunk = level.getChunkAt(oldPos);
-            if (levelChunk.isClientLightReady()){
-                levelLightEngine.checkBlock(oldPos);
-                levelLightEngine.checkBlock(oldPos2);
-            }
-
-        }
         super.remove(removalReason);
     }
 
@@ -153,6 +149,7 @@ public class FireballEntity extends SpellEntity {
             return;
         }
 
+
         this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  this.getLookAngle().y * speed, this.getZ() + this.getLookAngle().z * speed);
         if (this.tickCount > expirationTime){
             fireBallExplode(level);
@@ -160,6 +157,7 @@ public class FireballEntity extends SpellEntity {
         }
 
 
+<<<<<<< HEAD
         if (level.isClientSide()){
             BlockPos closestPos = new BlockPos(this.position().x + getLookAngle().x,this.position().y+ getLookAngle().y,this.position().z+ getLookAngle().z);
             LevelLightEngine levelLightEngine =  level.getLightEngine();
@@ -175,6 +173,8 @@ public class FireballEntity extends SpellEntity {
 
         }
 
+=======
+>>>>>>> 293aa1cef4998250b57e7bfbfd5a90a25e733ff4
 
     }
 

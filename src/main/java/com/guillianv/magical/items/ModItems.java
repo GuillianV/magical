@@ -20,4 +20,6 @@ public class ModItems {
     public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB)));
 
 
+
+
 }
