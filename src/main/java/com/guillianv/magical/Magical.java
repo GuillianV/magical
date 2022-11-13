@@ -31,7 +31,7 @@ public class Magical
 {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "magical";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public Magical()
     {
@@ -50,18 +50,11 @@ public class Magical
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        event.enqueueWork(() -> {
-
-
-        });
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        LOGGER.info("HELLO from server starting");
     }
 
 }

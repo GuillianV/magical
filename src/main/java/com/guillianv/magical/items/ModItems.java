@@ -1,6 +1,7 @@
 package com.guillianv.magical.items;
 
 import com.guillianv.magical.Magical;
+import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.tabs.ModCreativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -18,6 +19,10 @@ public class ModItems {
 
 
     public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB)));
+
+    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB), ModEntityTypes.BOTTLE.get()));
+    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB), ModEntityTypes.FIREBALL.get()));
+
 
 
 

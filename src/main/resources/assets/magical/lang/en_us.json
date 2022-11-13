@@ -1,5 +1,7 @@
 {
   "item.magical.wand_normal" : "Magical Wand",
+  "item.magical.scroll_bottle" : "Scroll of repudiate",
+  "item.magical.scroll_fireball" : "Scroll of destruction",
   "block.magical.altar" : "Altar",
 
 
