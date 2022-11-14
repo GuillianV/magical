@@ -2,12 +2,19 @@ package com.guillianv.magical.entity.animation.bottle;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.SpellEntity;
+import com.mojang.math.Vector3d;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
@@ -34,6 +41,32 @@ public class BottleEntity extends SpellEntity {
     @Override
     public Animation animation() {
         return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
+    }
+
+    @Override
+    public void setLookAngle(Vec3 lookAngle) {
+        super.setLookAngle(lookAngle);
+
+        BlockHitResult ray = rayTrace(level, level.players().get(this.getEntityData().get(DATA_SENDER_ID)), ClipContext.Fluid.NONE);
+        BlockPos lookPos = ray.getBlockPos();
+
+
+    }
+
+    protected static BlockHitResult rayTrace(Level level, Player player, ClipContext.Fluid fluidMode) {
+        double range = 15;
+
+        float f = player.getXRot();
+        float f1 = player.getYRot();
+        Vec3 vector3d = player.getEyePosition(1.0F);
+        float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
+        float f5 = Mth.sin(-f * ((float)Math.PI / 180F));
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        Vec3 vector3d1 = vector3d.add((double)f6 * range, (double)f5 * range, (double)f7 * range);
+        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
 
     @Override

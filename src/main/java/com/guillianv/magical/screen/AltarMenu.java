@@ -45,7 +45,7 @@ public class AltarMenu extends AbstractContainerMenu {
 
 
     public boolean canCraft() {
-        return data.get(0) == 1;
+        return this.blockEntity.isCraftable();
     }
 
 

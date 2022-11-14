@@ -1,5 +1,7 @@
 package com.guillianv.magical.blocks.entity;
 
+import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.items.ModItems;
 import com.guillianv.magical.items.Scroll;
 import com.guillianv.magical.items.Wand;
 import com.guillianv.magical.screen.AltarMenu;
@@ -40,12 +42,16 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
     protected final ContainerData data;
 
-    public boolean canCraft = false;
+    protected boolean craftable = false;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
+
+    public boolean isCraftable(){
+        return this.craftable;
+    }
+
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(3){
-
-
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
@@ -82,7 +88,7 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
             @Override
             public int get(int index) {
                 switch (index) {
-                    case 0: return ( AltarBlockEntity.this.canCraft) ? 1 : 0;
+                    case 0: return ( AltarBlockEntity.this.isCraftable()) ? 1 : 0;
                     default: return 0;
                 }
             }
@@ -90,7 +96,7 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
             @Override
             public void set(int index, int value) {
                 switch(index) {
-                    case 0: AltarBlockEntity.this.canCraft = value == 1 ; break;
+                    case 0: AltarBlockEntity.this.craftable = value == 1   ; break;
                 }
 
             }
@@ -183,11 +189,24 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
             pEntity.data.set(0,0);
         }else {
             pEntity.data.set(0,1);
+
+            if (pEntity.itemHandler.getStackInSlot(2).getCount() == 0){
+                pEntity.itemHandler.extractItem(0, 1, false);
+                pEntity.itemHandler.extractItem(1, 1, false);
+                Wand newWand = (Wand) ModItems.WAND_NORMAL.get();
+
+                newWand.setEntityType(scroll.entityType);
+                pEntity.itemHandler.setStackInSlot(2, new ItemStack(ModItems.WAND_NORMAL.get(),
+                        pEntity.itemHandler.getStackInSlot(2).getCount() + 1));
+
+            }
+
+
         }
 
-
-
     }
+
+    //region Animation
 
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -208,4 +227,6 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
     public AnimationFactory getFactory() {
         return this.factory;
     }
+
+    //endregion
 }

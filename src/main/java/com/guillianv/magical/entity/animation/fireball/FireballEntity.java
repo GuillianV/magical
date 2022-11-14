@@ -56,11 +56,6 @@ public class FireballEntity extends SpellEntity {
     private Random rand = new Random();
 
 
-    private static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_X = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Y = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Z = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-
-
 
 
     public FireballEntity(EntityType<? extends LivingEntity> entityType, Level level) {
@@ -68,16 +63,6 @@ public class FireballEntity extends SpellEntity {
     }
 
 
-    public void setLookAngle(Vec3 lookAngle) {
-        this.getEntityData().set(DATA_LOOK_ANGLE_X, (float) lookAngle.x);
-        this.getEntityData().set(DATA_LOOK_ANGLE_Y, (float) lookAngle.y);
-        this.getEntityData().set(DATA_LOOK_ANGLE_Z, (float) lookAngle.z);
-
-    }
-
-    public Vec3 getLookAngle(){
-        return new Vec3(this.getEntityData().get(DATA_LOOK_ANGLE_X),this.getEntityData().get(DATA_LOOK_ANGLE_Y),this.getEntityData().get(DATA_LOOK_ANGLE_Z));
-    }
 
     @Override
     public AnimationBuilder builder() {

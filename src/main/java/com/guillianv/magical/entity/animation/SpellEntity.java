@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -34,7 +35,13 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     public abstract AnimationBuilder builder() ;
     public abstract  Animation animation();
 
-    private static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.INT);
+
+
+    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_X = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Y = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Z = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
+
 
 
 
@@ -44,6 +51,18 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     public void onSpellAnimationEnd(){
 
         this.remove(RemovalReason.DISCARDED);
+    }
+
+
+    public void setLookAngle(Vec3 lookAngle) {
+        this.getEntityData().set(DATA_LOOK_ANGLE_X, (float) lookAngle.x);
+        this.getEntityData().set(DATA_LOOK_ANGLE_Y, (float) lookAngle.y);
+        this.getEntityData().set(DATA_LOOK_ANGLE_Z, (float) lookAngle.z);
+
+    }
+
+    public Vec3 getLookAngle(){
+        return new Vec3(this.getEntityData().get(DATA_LOOK_ANGLE_X),this.getEntityData().get(DATA_LOOK_ANGLE_Y),this.getEntityData().get(DATA_LOOK_ANGLE_Z));
     }
 
     @Override
