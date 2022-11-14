@@ -1,14 +1,17 @@
 package com.guillianv.magical.items;
 
+import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class Wand extends Item {
@@ -30,29 +34,50 @@ public class Wand extends Item {
 
     static float scaleValue = 1;
 
-    protected EntityType<? extends SpellEntity> spellEntityType;
 
     public Wand(Properties properties) {
         super(properties);
     }
 
-    public void setEntityType(EntityType<? extends SpellEntity> _spellEntityType){
-        this.spellEntityType = _spellEntityType;
+    public void setEntityType(EntityType<? extends SpellEntity> _spellEntityType, ItemStack stack){
+
+        CompoundTag tag = new CompoundTag();
+        tag.putString("entity_type",_spellEntityType.getDescriptionId().replaceAll("entity.magical.", Magical.MOD_ID+":"));
+        stack.readShareTag(tag);
     }
-    
+
+    @Override
+    public boolean isFoil(ItemStack pStack) {
+        return pStack.hasTag();
+    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
 
 
-        if (!level.isClientSide() && spellEntityType != null){
+        if (!level.isClientSide()){
+            if(player.getItemInHand(interactionHand).hasTag()) {
+                CompoundTag compoundTag = player.getItemInHand(interactionHand).getShareTag();
+                if (compoundTag.contains("entity_type")){
+                    String entityTypeValue = compoundTag.getString("entity_type");
+                    Optional<EntityType<?>> typeOptional = EntityType.byString(entityTypeValue);
+                    if (typeOptional.isPresent()){
+                        EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
 
-            SpellEntity spellEntity = spellEntityType.create(level);
-            spellEntity.setPos(new Vec3(player.position().x,player.position().y + player.getEyeHeight(),player.position().z));
 
-            level.addFreshEntity(spellEntity);
-            spellEntity.setLookAngle(player.getLookAngle());
+                        SpellEntity spellEntity = spellEntityType.create(level);
+                        spellEntity.setPos(new Vec3(player.position().x,player.position().y + player.getEyeHeight(),player.position().z));
+                        level.addFreshEntity(spellEntity);
+                        spellEntity.setLookAngle(player.getLookAngle());
+
+                    }
+                }
+
+
+
+            }
+
 
         }
 
@@ -62,28 +87,24 @@ public class Wand extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
-        if (level != null && spellEntityType != null){
-            components.add(Component.literal("Binded with "+spellEntityType.toString()));
+        if (level != null){
+
+                if(itemStack.hasTag()) {
+                    CompoundTag compoundTag = itemStack.getShareTag();
+                    if (compoundTag.contains("entity_type")){
+                        String entityTypeValue = compoundTag.getString("entity_type");
+                        Optional<EntityType<?>> typeOptional = EntityType.byString(entityTypeValue);
+                        if (typeOptional.isPresent()){
+
+                            components.add(Component.literal("Binded with "+typeOptional.get().getDescriptionId().replaceAll("entity.magical.","")));
+
+                        }}}
+
         }
 
 
         super.appendHoverText(itemStack, level, components, tooltipFlag);
     }
-
-    @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
-
-        /*
-        BottleEntity bottleEntity = new BottleEntity(ModEntityTypes.BOTTLE.get(),useOnContext.getLevel());
-        bottleEntity.setPos( new Vec3(useOnContext.getClickedPos().getX(),useOnContext.getClickedPos().getY() ,useOnContext.getClickedPos().getZ()));
-        if (!useOnContext.getLevel().isClientSide()){
-            useOnContext.getLevel().addFreshEntity(bottleEntity);
-        }*/
-
-
-        return super.useOn(useOnContext);
-    }
-
 
     @Override
     public boolean isBarVisible(ItemStack itemStack) {

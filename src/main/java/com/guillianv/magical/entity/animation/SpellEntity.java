@@ -31,6 +31,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
 
+
     public  AnimationFactory  factory = GeckoLibUtil.createFactory(this);
     public abstract AnimationBuilder builder() ;
     public abstract  Animation animation();

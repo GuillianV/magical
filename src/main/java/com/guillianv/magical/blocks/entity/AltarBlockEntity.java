@@ -76,6 +76,11 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
         @Override
         protected void onContentsChanged(int slot) {
+            if (slot == 2 && itemHandler.getStackInSlot(2).getCount() > 0){
+                data.set(0,1);
+            }else  {
+                data.set(0,0);
+            }
             setChanged();
         }
     };
@@ -186,18 +191,17 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
 
 
         if (scroll == null || wand == null){
-            pEntity.data.set(0,0);
+
         }else {
-            pEntity.data.set(0,1);
 
             if (pEntity.itemHandler.getStackInSlot(2).getCount() == 0){
                 pEntity.itemHandler.extractItem(0, 1, false);
                 pEntity.itemHandler.extractItem(1, 1, false);
                 Wand newWand = (Wand) ModItems.WAND_NORMAL.get();
-
-                newWand.setEntityType(scroll.entityType);
-                pEntity.itemHandler.setStackInSlot(2, new ItemStack(ModItems.WAND_NORMAL.get(),
-                        pEntity.itemHandler.getStackInSlot(2).getCount() + 1));
+                ItemStack itemStack = new ItemStack(newWand,
+                        pEntity.itemHandler.getStackInSlot(2).getCount() + 1);
+                newWand.setEntityType(scroll.entityType,itemStack);
+                pEntity.itemHandler.setStackInSlot(2,itemStack );
 
             }
 
