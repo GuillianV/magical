@@ -1,9 +1,11 @@
 {
-  "item.magical.wand_normal" : "Magical Wand",
+  "item.magical.wand_normal" : "Simple Wand",
+  "item.magical.wand_uncommon" : "Uncommon Wand",
+
   "item.magical.scroll_bottle" : "Scroll of repudiate",
   "item.magical.scroll_fireball" : "Scroll of destruction",
-  "block.magical.altar" : "Altar",
 
+  "block.magical.altar" : "Altar",
 
   "itemGroup.magical_tab": "Magical"
 }

@@ -41,15 +41,15 @@ public class Wand extends Item  {
         super(properties);
     }
 
-    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack stack){
+    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack oldItemStack, ItemStack newItemStack){
 
-        if (stack.hasTag() && stack.getTag().contains("entity_type"))
+        if (oldItemStack.hasTag() && oldItemStack.getTag().contains("entity_type"))
             return false;
 
         CompoundTag tag = new CompoundTag();
         tag.putString("entity_type",entityTypeId);
         tag.putString("scroll_rarity",scrollRarity.name());
-        stack.readShareTag(tag);
+        newItemStack.readShareTag(tag);
         return true;
     }
 

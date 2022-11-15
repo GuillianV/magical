@@ -37,17 +37,6 @@ public class BottleEntity extends SpellEntity {
         super(entityType, level);
 
     }
-
-    @Override
-    public AnimationBuilder builder() {
-        return  new AnimationBuilder().addAnimation("animation.bottle.play", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-    }
-
-    @Override
-    public Animation animation() {
-        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
-    }
-
     public void SpawnEffect(){
         AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
         areaeffectcloud.setParticle(ParticleTypes.WITCH);
@@ -61,6 +50,21 @@ public class BottleEntity extends SpellEntity {
         this.level.addFreshEntity(areaeffectcloud);
     }
 
+    //region Animation
+
+    @Override
+    public AnimationBuilder builder() {
+        return  new AnimationBuilder().addAnimation("animation.bottle.play", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+    }
+
+    @Override
+    public Animation animation() {
+        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
+    }
+
+    //endregion
+
+    //region Override Methods
 
     @Override
     public boolean Init() {
@@ -102,4 +106,6 @@ public class BottleEntity extends SpellEntity {
         ResourceLocation resourceLocation = ModEntityTypes.BOTTLE.getKey().location();
         return resourceLocation.toString();
     }
+
+    //endregion
 }

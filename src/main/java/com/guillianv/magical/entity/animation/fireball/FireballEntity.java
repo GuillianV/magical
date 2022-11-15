@@ -52,11 +52,7 @@ public class FireballEntity extends SpellEntity {
     private int particlesSmokeDuration = 1;
     private float entityDamageDealth= 3;
     private int expirationTime = 80;
-
-
-
     private Random rand = new Random();
-
 
 
 
@@ -64,34 +60,10 @@ public class FireballEntity extends SpellEntity {
         super(entityType, level);
     }
 
-
-
-    @Override
-    public AnimationBuilder builder() {
-        return  new AnimationBuilder().addAnimation("animation.fireball.idle", ILoopType.EDefaultLoopTypes.LOOP);
-    }
-
-    @Override
-    public Animation animation() {
-        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json")).getAnimation("animation.fireball.idle");
-    }
-
-
-
-    @Override
-    public void onSpellAnimationEnd() {
-
-    }
-
-    @Override
-    public boolean Init() {
-
-        setPos(position().x + getLookAngle().x,position().y + getLookAngle().y,position().z + getLookAngle().z);
-
-        return super.Init();
-    }
-
     private void fireBallExplode(Level level){
+
+        if (level.isClientSide())
+            return;
 
         LivingEntity livingEntity = getSenderLivingEntity();
         if (livingEntity != null){
@@ -102,12 +74,6 @@ public class FireballEntity extends SpellEntity {
         }
 
 
-    }
-
-    @Override
-    public void remove(RemovalReason removalReason) {
-
-        super.remove(removalReason);
     }
 
 
@@ -122,17 +88,30 @@ public class FireballEntity extends SpellEntity {
 
     }
 
+    //region Animation
+
+
     @Override
-    public String spellDescription() {
-        return "Destruction";
+    public AnimationBuilder builder() {
+        return  new AnimationBuilder().addAnimation("animation.fireball.idle", ILoopType.EDefaultLoopTypes.LOOP);
     }
 
     @Override
-    public String entityClassId() {
-        ResourceLocation resourceLocation = ModEntityTypes.FIREBALL.getKey().location();
-        return resourceLocation.toString();
+    public Animation animation() {
+        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json")).getAnimation("animation.fireball.idle");
     }
 
+    //endregion
+
+    //region Override Methods
+
+    @Override
+    public boolean Init() {
+
+        setPos(position().x + getLookAngle().x,position().y + getLookAngle().y,position().z + getLookAngle().z);
+
+        return super.Init();
+    }
     @Override
     public void tick() {
 
@@ -160,5 +139,32 @@ public class FireballEntity extends SpellEntity {
         }
 
     }
+
+    @Override
+    public void remove(RemovalReason removalReason) {
+
+        super.remove(removalReason);
+    }
+
+
+    @Override
+    public String spellDescription() {
+        return "Destruction";
+    }
+
+    @Override
+    public String entityClassId() {
+        ResourceLocation resourceLocation = ModEntityTypes.FIREBALL.getKey().location();
+        return resourceLocation.toString();
+    }
+
+
+    @Override
+    public void onSpellAnimationEnd() {
+
+    }
+
+    //endregion
+
 
 }

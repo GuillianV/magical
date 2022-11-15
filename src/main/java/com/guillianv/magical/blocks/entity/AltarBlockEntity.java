@@ -181,31 +181,34 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
     //On each tick
     public static void tick(Level level, BlockPos pos, BlockState state, AltarBlockEntity pEntity) {
 
+        ItemStack wandStack = pEntity.itemHandler.getStackInSlot(0);
+        ItemStack scrollStack = pEntity.itemHandler.getStackInSlot(1);
+        ItemStack wandMergedStack = pEntity.itemHandler.getStackInSlot(2);
+
         Wand wand = null;
-        if (pEntity.itemHandler.getStackInSlot(0).getItem() instanceof Wand)
-            wand = (Wand) pEntity.itemHandler.getStackInSlot(0).getItem();
-
         Scroll scroll = null;
-        if (pEntity.itemHandler.getStackInSlot(1).getItem() instanceof Scroll)
-            scroll = (Scroll) pEntity.itemHandler.getStackInSlot(1).getItem();
+
+        if (wandStack.getItem() instanceof Wand)
+            wand = (Wand) wandStack.getItem();
 
 
-        if (scroll == null || wand == null){
+        if (scrollStack.getItem() instanceof Scroll)
+            scroll = (Scroll) scrollStack.getItem();
 
-        }else {
 
-            if (pEntity.itemHandler.getStackInSlot(2).getCount() == 0){
-                pEntity.itemHandler.extractItem(0, 1, false);
-                pEntity.itemHandler.extractItem(1, 1, false);
-                Wand newWand = (Wand) ModItems.WAND_NORMAL.get();
-                ItemStack itemStack = new ItemStack(newWand,
-                        pEntity.itemHandler.getStackInSlot(2).getCount() + 1);
+        if (scroll != null && wand != null && wandMergedStack.getCount() == 0){
+
+                Wand newWand = (Wand) wandStack.copy().getItem();
+                ItemStack newItemStack = new ItemStack(newWand,wandMergedStack.getCount() + 1);
 
                 SpellEntity spellEntity = scroll.entityType.create(level);
-                newWand.setEntityType(spellEntity.entityClassId(),scroll.getRarity(itemStack),itemStack);
-                pEntity.itemHandler.setStackInSlot(2,itemStack );
+                if (newWand.setEntityType(spellEntity.entityClassId(),scroll.getRarity(newItemStack), wandStack ,newItemStack)){
+                    pEntity.itemHandler.extractItem(0, 1, false);
+                    pEntity.itemHandler.extractItem(1, 1, false);
+                    pEntity.itemHandler.setStackInSlot(2,newItemStack );
+                }
 
-            }
+
 
 
         }
