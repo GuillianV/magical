@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class Wand extends Item {
+public class Wand extends Item  {
 
 
     static float scaleValue = 1;
@@ -57,16 +57,19 @@ public class Wand extends Item {
 
     @Override
     public boolean isFoil(ItemStack pStack) {
-        return pStack.hasTag();
+        return pStack.hasTag() && pStack.getShareTag().contains("entity_type") ;
     }
 
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
+
+
         if (!level.isClientSide()){
-                CompoundTag compoundTag = player.getItemInHand(interactionHand).getShareTag();
-                if (player.getItemInHand(interactionHand).hasTag() && compoundTag.contains("entity_type")){
+                ItemStack itemStack = player.getItemInHand(interactionHand);
+                CompoundTag compoundTag = itemStack.getShareTag();
+                if (itemStack.hasTag() && compoundTag.contains("entity_type")){
 
                     Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
                     if (typeOptional.isPresent()){
@@ -75,6 +78,8 @@ public class Wand extends Item {
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
                         level.addFreshEntity(spellEntity);
 
+
+                        itemStack.hurtAndBreak(1,player,(player2) -> player2.broadcastBreakEvent(player2.getUsedItemHand()));
                     }
                 }
 
@@ -135,8 +140,4 @@ public class Wand extends Item {
     }
 
 
-    @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        return super.damageItem(stack, amount, entity, onBroken);
-    }
 }

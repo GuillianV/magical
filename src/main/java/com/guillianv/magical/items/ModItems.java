@@ -19,7 +19,7 @@ public class ModItems {
     }
 
 
-    public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(100).setNoRepair().fireResistant().defaultDurability(100).rarity(Rarity.COMMON)));
 
     public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get()));
     public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get()));

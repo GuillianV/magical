@@ -1,5 +1,6 @@
 package com.guillianv.magical.entity.animation;
 
+import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -14,8 +15,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -110,12 +114,17 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
        SpellEntity spellEntity = entityType.create(level);
        spellEntity.setSenderId(sender.getId());
        Vec3 position = new Vec3(sender.position().x,sender.position().y +sender.getEyeHeight(),sender.position().z);
-       spellEntity.setInitialPos(position);
        spellEntity.setPos(position);
+       spellEntity.setInitialPos(position);
        spellEntity.setRot(sender.getYRot(),sender.getXRot());
-       return spellEntity;
+       if (spellEntity.Init())
+           return spellEntity;
+       else return null;
     }
 
+    public boolean Init(){
+        return true;
+    }
 
     //region Animation
     public void onSpellAnimationEnd(){

@@ -27,7 +27,7 @@ public class BlockUtils {
 
 
     public static BlockHitResult simpleRayTrace(Level level, LivingEntity livingEntity, Vec3 startingPos, float xRotation, float yRotation, ClipContext.Fluid fluidMode) {
-        double range = 15;
+        double range = 99;
 
         float f = xRotation;
         float f1 = yRotation;
@@ -39,7 +39,7 @@ public class BlockUtils {
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         Vec3 vector3d1 = vector3d.add((double)f6 * range, (double)f5 * range, (double)f7 * range);
-        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, livingEntity));
+        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.VISUAL, fluidMode, livingEntity));
     }
 
 }

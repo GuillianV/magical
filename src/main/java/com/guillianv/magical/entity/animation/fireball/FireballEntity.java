@@ -83,7 +83,13 @@ public class FireballEntity extends SpellEntity {
 
     }
 
+    @Override
+    public boolean Init() {
 
+        setPos(position().x + getLookAngle().x,position().y + getLookAngle().y,position().z + getLookAngle().z);
+
+        return super.Init();
+    }
 
     private void fireBallExplode(Level level){
 
