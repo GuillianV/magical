@@ -102,11 +102,7 @@ public class FireballEntity extends SpellEntity {
     }
 
 
-
-
-    @Override
-    public void tick() {
-
+    public void SpawnParticles(){
         AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY()+this.getEyeHeight(), this.getZ());
         areaeffectcloud.setParticle(ParticleTypes.LARGE_SMOKE);
         areaeffectcloud.setRadius(particlesSmokeRadius);
@@ -115,8 +111,13 @@ public class FireballEntity extends SpellEntity {
         level.addParticle(ParticleTypes.FLAME,this.getX(),this.getY()+this.getEyeHeight(),this.getZ(),rand.nextDouble(0.1),rand.nextDouble(0.1),rand.nextDouble(0.1));
         level.addFreshEntity(areaeffectcloud);
 
+    }
 
 
+    @Override
+    public void tick() {
+
+        SpawnParticles();
 
         Block block = level.getBlockState(new BlockPos(this.position())).getBlock();
         if (block != Blocks.AIR){

@@ -45,6 +45,18 @@ public class BottleEntity extends SpellEntity {
         return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
     }
 
+    public void SpawnEffect(){
+        AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
+        areaeffectcloud.setParticle(ParticleTypes.WITCH);
+        areaeffectcloud.setRadius(areaRadius);
+        areaeffectcloud.setDuration(areaDuration);
+        areaeffectcloud.setRadiusPerTick((7.0F - areaeffectcloud.getRadius()) / (float)areaeffectcloud.getDuration());
+
+
+        MobEffectInstance mobEffect = new MobEffectInstance(MobEffects.POISON, effectDuration, effectAmplifier);
+        areaeffectcloud.addEffect(mobEffect);
+        this.level.addFreshEntity(areaeffectcloud);
+    }
 
 
 
@@ -60,16 +72,7 @@ public class BottleEntity extends SpellEntity {
         setPos(pos);
         if (this.tickCount >=  animation().animationLength - animation().animationLength / 3 && !spawnPoison){
             spawnPoison = true;
-            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
-            areaeffectcloud.setParticle(ParticleTypes.WITCH);
-            areaeffectcloud.setRadius(areaRadius);
-            areaeffectcloud.setDuration(areaDuration);
-            areaeffectcloud.setRadiusPerTick((7.0F - areaeffectcloud.getRadius()) / (float)areaeffectcloud.getDuration());
-
-
-            MobEffectInstance mobEffect = new MobEffectInstance(MobEffects.POISON, effectDuration, effectAmplifier);
-            areaeffectcloud.addEffect(mobEffect);
-            this.level.addFreshEntity(areaeffectcloud);
+            SpawnEffect();
 
         }
 
