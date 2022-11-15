@@ -200,7 +200,9 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
                 Wand newWand = (Wand) ModItems.WAND_NORMAL.get();
                 ItemStack itemStack = new ItemStack(newWand,
                         pEntity.itemHandler.getStackInSlot(2).getCount() + 1);
-                newWand.setEntityType(scroll.entityType,itemStack);
+
+                SpellEntity spellEntity = scroll.entityType.create(level);
+                newWand.setEntityType(spellEntity.entityClassId(),scroll.getRarity(itemStack),itemStack);
                 pEntity.itemHandler.setStackInSlot(2,itemStack );
 
             }

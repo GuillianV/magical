@@ -1,6 +1,7 @@
 package com.guillianv.magical.entity.animation.fireball;
 
 import com.guillianv.magical.Magical;
+import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -75,6 +76,8 @@ public class FireballEntity extends SpellEntity {
         return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json")).getAnimation("animation.fireball.idle");
     }
 
+
+
     @Override
     public void onSpellAnimationEnd() {
 
@@ -113,6 +116,16 @@ public class FireballEntity extends SpellEntity {
 
     }
 
+    @Override
+    public String spellDescription() {
+        return "Destruction";
+    }
+
+    @Override
+    public String entityClassId() {
+        ResourceLocation resourceLocation = ModEntityTypes.FIREBALL.getKey().location();
+        return resourceLocation.toString();
+    }
 
     @Override
     public void tick() {
@@ -139,9 +152,6 @@ public class FireballEntity extends SpellEntity {
             fireBallExplode(level);
             return;
         }
-
-
-
 
     }
 

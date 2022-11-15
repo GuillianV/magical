@@ -38,6 +38,10 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     public abstract AnimationBuilder builder() ;
     public abstract  Animation animation();
 
+    abstract public String spellDescription();
+
+    abstract public String entityClassId();
+
     private static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.INT);
 
     private static final EntityDataAccessor<Float> DATA_INITIAL_POS_X = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
@@ -79,13 +83,20 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
         return this.getEntityData().get(DATA_SENDER_ID);
     }
 
+
+
+
+
+
     @Nullable
     public LivingEntity getSenderLivingEntity(){
         Entity e = level.getEntity(getSenderId());
-        if (e != null && e instanceof LivingEntity)
+        if (e instanceof LivingEntity)
             return (LivingEntity) e;
         return null;
     }
+
+
 
 
     //endregion

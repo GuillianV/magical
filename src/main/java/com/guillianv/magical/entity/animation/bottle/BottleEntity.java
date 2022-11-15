@@ -2,6 +2,7 @@ package com.guillianv.magical.entity.animation.bottle;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.blocks.utils.BlockUtils;
+import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
 import com.mojang.math.Vector3d;
 import net.minecraft.BlockUtil;
@@ -59,7 +60,6 @@ public class BottleEntity extends SpellEntity {
     }
 
 
-
     @Override
     public void tick() {
         super.tick();
@@ -76,5 +76,18 @@ public class BottleEntity extends SpellEntity {
 
         }
 
+    }
+
+
+    @Override
+    public String spellDescription() {
+        return "Repudiate";
+    }
+
+
+    @Override
+    public String entityClassId() {
+        ResourceLocation resourceLocation = ModEntityTypes.BOTTLE.getKey().location();
+        return resourceLocation.toString();
     }
 }

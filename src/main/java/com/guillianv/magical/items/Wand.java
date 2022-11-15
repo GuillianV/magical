@@ -5,6 +5,7 @@ import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import com.guillianv.magical.items.utils.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
@@ -39,33 +41,37 @@ public class Wand extends Item {
         super(properties);
     }
 
-    public void setEntityType(EntityType<? extends SpellEntity> _spellEntityType, ItemStack stack){
+    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack stack){
+
+        if (stack.hasTag() && stack.getTag().contains("entity_type"))
+            return false;
 
         CompoundTag tag = new CompoundTag();
-        tag.putString("entity_type",_spellEntityType.getDescriptionId().replaceAll("entity.magical.", Magical.MOD_ID+":"));
+        tag.putString("entity_type",entityTypeId);
+        tag.putString("scroll_rarity",scrollRarity.name());
         stack.readShareTag(tag);
+        return true;
     }
+
+
 
     @Override
     public boolean isFoil(ItemStack pStack) {
         return pStack.hasTag();
     }
 
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
-
-
         if (!level.isClientSide()){
-            if(player.getItemInHand(interactionHand).hasTag()) {
                 CompoundTag compoundTag = player.getItemInHand(interactionHand).getShareTag();
-                if (compoundTag.contains("entity_type")){
-                    String entityTypeValue = compoundTag.getString("entity_type");
-                    Optional<EntityType<?>> typeOptional = EntityType.byString(entityTypeValue);
+                if (player.getItemInHand(interactionHand).hasTag() && compoundTag.contains("entity_type")){
+
+                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
                     if (typeOptional.isPresent()){
+
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
-
-
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
                         level.addFreshEntity(spellEntity);
 
@@ -74,7 +80,7 @@ public class Wand extends Item {
 
 
 
-            }
+
 
 
         }
@@ -86,18 +92,29 @@ public class Wand extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         if (level != null){
-
-                if(itemStack.hasTag()) {
+                if(itemStack.hasTag() && itemStack.getShareTag().contains("entity_type")) {
                     CompoundTag compoundTag = itemStack.getShareTag();
-                    if (compoundTag.contains("entity_type")){
-                        String entityTypeValue = compoundTag.getString("entity_type");
-                        Optional<EntityType<?>> typeOptional = EntityType.byString(entityTypeValue);
-                        if (typeOptional.isPresent()){
+                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
+                    if (typeOptional.isPresent()){
 
-                            components.add(Component.literal("Binded with "+typeOptional.get().getDescriptionId().replaceAll("entity.magical.","")));
+                        EntityType<SpellEntity> spellEntityEntityType = (EntityType<SpellEntity>) typeOptional.get();
+                        SpellEntity spellEntity = spellEntityEntityType.create(level);
+                        String spellDescription = spellEntity.spellDescription();
 
-                        }}}
+                        if (compoundTag.contains("scroll_rarity")){
 
+                            String rarityString =compoundTag.getString("scroll_rarity");
+                            Rarity spellRarity = ItemUtils.getRarityWithStrings(rarityString);
+
+                            components.add( Component.literal("Binded with scroll of ").append(ItemUtils.colorValueWithRarity(spellDescription,spellRarity)));
+
+                        }else {
+                            components.add(Component.literal("Binded with scroll of "+spellDescription));
+                        }
+
+
+                        }
+                }
         }
 
 
