@@ -1,24 +1,24 @@
 package com.guillianv.magical.entity.animation;
 
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.Animation;
@@ -32,44 +32,86 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
 
 
+    //region properties and get/set
+
     public  AnimationFactory  factory = GeckoLibUtil.createFactory(this);
     public abstract AnimationBuilder builder() ;
     public abstract  Animation animation();
 
-    protected static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.INT);
 
-
-    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_X = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Y = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> DATA_LOOK_ANGLE_Z = SynchedEntityData.defineId(FireballEntity.class, EntityDataSerializers.FLOAT);
-
-
+    private static final EntityDataAccessor<Float> DATA_INITIAL_POS_X = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_INITIAL_POS_Y = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_INITIAL_POS_Z = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
 
 
     protected float scale = 1f;
 
 
-    public void onSpellAnimationEnd(){
 
-        this.remove(RemovalReason.DISCARDED);
+
+
+
+
+    public void setInitialPos(Vec3 pos){
+
+        this.getEntityData().set(DATA_INITIAL_POS_X, (float) pos.x);
+        this.getEntityData().set(DATA_INITIAL_POS_Y, (float) pos.y);
+        this.getEntityData().set(DATA_INITIAL_POS_Z, (float) pos.z);
+
     }
 
-
-    public void setLookAngle(Vec3 lookAngle) {
-        this.getEntityData().set(DATA_LOOK_ANGLE_X, (float) lookAngle.x);
-        this.getEntityData().set(DATA_LOOK_ANGLE_Y, (float) lookAngle.y);
-        this.getEntityData().set(DATA_LOOK_ANGLE_Z, (float) lookAngle.z);
-
-    }
-
-    public Vec3 getLookAngle(){
-        return new Vec3(this.getEntityData().get(DATA_LOOK_ANGLE_X),this.getEntityData().get(DATA_LOOK_ANGLE_Y),this.getEntityData().get(DATA_LOOK_ANGLE_Z));
+    public Vec3 getInitialPos(){
+        return new Vec3(this.getEntityData().get(DATA_INITIAL_POS_X),this.getEntityData().get(DATA_INITIAL_POS_Y),this.getEntityData().get(DATA_INITIAL_POS_Z));
     }
 
     @Override
     public float getScale() {
         return scale;
     }
+
+
+    public void setSenderId(int entityId){
+        this.getEntityData().set(DATA_SENDER_ID, entityId);
+    }
+
+    public int getSenderId(){
+        return this.getEntityData().get(DATA_SENDER_ID);
+    }
+
+    @Nullable
+    public LivingEntity getSenderLivingEntity(){
+        Entity e = level.getEntity(getSenderId());
+        if (e != null && e instanceof LivingEntity)
+            return (LivingEntity) e;
+        return null;
+    }
+
+
+    //endregion
+
+    public SpellEntity(EntityType<? extends LivingEntity> entityType, Level level) {
+        super(entityType, level);
+    }
+
+
+    public  static SpellEntity create(EntityType<? extends SpellEntity> entityType, Level level, LivingEntity sender) {
+       SpellEntity spellEntity = entityType.create(level);
+       spellEntity.setSenderId(sender.getId());
+       Vec3 position = new Vec3(sender.position().x,sender.position().y +sender.getEyeHeight(),sender.position().z);
+       spellEntity.setInitialPos(position);
+       spellEntity.setPos(position);
+       spellEntity.setRot(sender.getYRot(),sender.getXRot());
+       return spellEntity;
+    }
+
+
+    //region Animation
+    public void onSpellAnimationEnd(){
+        this.remove(RemovalReason.DISCARDED);
+    }
+
+
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -89,36 +131,36 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
         return PlayState.CONTINUE;
     }
 
-    public SpellEntity(EntityType<? extends LivingEntity> entityType, Level level) {
-        super(entityType, level);
+
+    //endregion
+
+    //region Override Methods
+
+    @Override
+    public void tick() {
+
+        if (this.tickCount >= animation().animationLength){
+            this.onSpellAnimationEnd();
+        }
     }
 
     @Override
-    public AttributeInstance getAttribute(@NotNull Attribute attribute) {
-        return super.getAttribute(attribute);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(DATA_SENDER_ID, 0);
+        //Set initial sender position
+        this.getEntityData().define(DATA_INITIAL_POS_X, 0f);
+        this.getEntityData().define(DATA_INITIAL_POS_Y, 0f);
+        this.getEntityData().define(DATA_INITIAL_POS_Z, 0f);
     }
+
 
 
     @Override
     public AttributeMap getAttributes() {
-        return  new AttributeMap(LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH).build());
+        return  new AttributeMap(LivingEntity.createLivingAttributes().build());
     }
 
-    @Override
-    public double getAttributeBaseValue(Attribute attribute) {
-
-        return super.getAttributeBaseValue(attribute);
-    }
-
-    @Override
-    public double getAttributeValue(Attribute attribute) {
-        return super.getAttributeValue(attribute);
-    }
-
-    @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return null;
-    }
 
     @Override
     public ItemStack getItemBySlot(EquipmentSlot equipmentSlot) {
@@ -128,20 +170,6 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     @Override
     public void setItemSlot(EquipmentSlot equipmentSlot, ItemStack itemStack) {
 
-    }
-
-    public void setSenderId(int playerId){
-        this.getEntityData().set(DATA_SENDER_ID, playerId);
-    }
-
-    public int getSender(){
-       return this.getEntityData().get(DATA_SENDER_ID);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(DATA_SENDER_ID, 0);
     }
 
     @Override
@@ -155,15 +183,16 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     }
 
     @Override
+    public Iterable<ItemStack> getArmorSlots() {
+        return null;
+    }
+
+    @Override
     public boolean isInvulnerable() {
         return true;
     }
 
-    @Override
-    public void tick() {
 
-        if (this.tickCount >= animation().animationLength){
-            this.onSpellAnimationEnd();
-        }
-    }
+
+    //endregion
 }

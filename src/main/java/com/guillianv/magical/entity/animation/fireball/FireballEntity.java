@@ -28,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
@@ -80,21 +81,18 @@ public class FireballEntity extends SpellEntity {
     }
 
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(DATA_LOOK_ANGLE_X, 0f);
-        this.getEntityData().define(DATA_LOOK_ANGLE_Y, 0f);
-        this.getEntityData().define(DATA_LOOK_ANGLE_Z, 0f);
-    }
-
-
-
 
     private void fireBallExplode(Level level){
-        Player player = level.players().get(getSender());
-        level.explode(player, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(),explosionRadius,true, Explosion.BlockInteraction.BREAK);
-        this.remove(RemovalReason.DISCARDED);
+
+        LivingEntity livingEntity = getSenderLivingEntity();
+        if (livingEntity != null){
+            level.explode(livingEntity, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(),explosionRadius,true, Explosion.BlockInteraction.BREAK);
+            this.remove(RemovalReason.DISCARDED);
+        }else {
+            this.remove(RemovalReason.UNLOADED_WITH_PLAYER);
+        }
+
+
     }
 
     @Override

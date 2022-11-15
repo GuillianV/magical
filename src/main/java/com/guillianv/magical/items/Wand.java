@@ -66,10 +66,8 @@ public class Wand extends Item {
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
 
 
-                        SpellEntity spellEntity = spellEntityType.create(level);
-                        spellEntity.setPos(new Vec3(player.position().x,player.position().y + player.getEyeHeight(),player.position().z));
+                        SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
                         level.addFreshEntity(spellEntity);
-                        spellEntity.setLookAngle(player.getLookAngle());
 
                     }
                 }

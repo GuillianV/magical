@@ -1,8 +1,10 @@
 package com.guillianv.magical.entity.animation.bottle;
 
 import com.guillianv.magical.Magical;
+import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.animation.SpellEntity;
 import com.mojang.math.Vector3d;
+import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -43,44 +45,26 @@ public class BottleEntity extends SpellEntity {
         return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
     }
 
-    @Override
-    public void setLookAngle(Vec3 lookAngle) {
-        super.setLookAngle(lookAngle);
-
-        BlockHitResult ray = rayTrace(level, level.players().get(this.getEntityData().get(DATA_SENDER_ID)), ClipContext.Fluid.NONE);
-        BlockPos lookPos = ray.getBlockPos();
 
 
-    }
-
-    protected static BlockHitResult rayTrace(Level level, Player player, ClipContext.Fluid fluidMode) {
-        double range = 15;
-
-        float f = player.getXRot();
-        float f1 = player.getYRot();
-        Vec3 vector3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
-        float f5 = Mth.sin(-f * ((float)Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        Vec3 vector3d1 = vector3d.add((double)f6 * range, (double)f5 * range, (double)f7 * range);
-        return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
-    }
 
     @Override
     public void tick() {
         super.tick();
 
 
+        BlockHitResult ray = BlockUtils.simpleRayTrace(level, this,this.getInitialPos() ,this.getXRot(),this.getYRot(), ClipContext.Fluid.NONE);
+        BlockPos lookPos = ray.getBlockPos();
+
+        Vec3 pos = new Vec3(lookPos.getX(),lookPos.getY(),lookPos.getZ());
+        setPos(pos);
         if (this.tickCount >=  animation().animationLength - animation().animationLength / 3 && !spawnPoison){
             spawnPoison = true;
             AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
             areaeffectcloud.setParticle(ParticleTypes.WITCH);
             areaeffectcloud.setRadius(areaRadius);
             areaeffectcloud.setDuration(areaDuration);
-             areaeffectcloud.setRadiusPerTick((7.0F - areaeffectcloud.getRadius()) / (float)areaeffectcloud.getDuration());
+            areaeffectcloud.setRadiusPerTick((7.0F - areaeffectcloud.getRadius()) / (float)areaeffectcloud.getDuration());
 
 
             MobEffectInstance mobEffect = new MobEffectInstance(MobEffects.POISON, effectDuration, effectAmplifier);
