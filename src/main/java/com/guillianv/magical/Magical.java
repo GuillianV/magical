@@ -7,6 +7,7 @@ import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.bottle.render.BottleRenderer;
 import com.guillianv.magical.entity.animation.fireball.render.FireballRenderer;
 import com.guillianv.magical.items.ModItems;
+import com.guillianv.magical.loot.ModLootModifiers;
 import com.guillianv.magical.screen.ModMenuTypes;
 import com.guillianv.magical.screen.AltarScreen;
 import com.mojang.logging.LogUtils;
@@ -46,6 +47,7 @@ public class Magical
         ModBlockEntities.register(modEventBus);
         ModEntityTypes.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#P#",
+    "___",
+    "SQS"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "_": {
+      "item": "minecraft:quartz_slab"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "Q": {
+      "item": "minecraft:quartz_pillar"
+    }
+  },
+  "result": {
+    "item": "magical:altar",
+    "count": 1
+  }
+}
