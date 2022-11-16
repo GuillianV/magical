@@ -3,6 +3,7 @@ package com.guillianv.magical.entity;
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import com.guillianv.magical.entity.animation.thunder_strike.ThunderStrikeEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -25,6 +26,12 @@ public class ModEntityTypes  {
             ENTITY_TYPES.register("fireball",
                     () -> EntityType.Builder.of(FireballEntity::new, MobCategory.MISC).fireImmune().sized(0.5f,0.5f)
                             .build(new ResourceLocation(Magical.MOD_ID, "fireball").toString()));
+
+    public static final RegistryObject<EntityType<ThunderStrikeEntity>> THUNDER_STRIKE =
+            ENTITY_TYPES.register("thunder_strike",
+                    () -> EntityType.Builder.of(ThunderStrikeEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "thunder_strike").toString()));
+
 
 
     public static void register(IEventBus eventBus) {

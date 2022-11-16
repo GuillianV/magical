@@ -38,6 +38,7 @@ import java.util.function.Consumer;
 public class Wand extends Item  {
 
 
+
     static float scaleValue = 1;
 
     int coolDownUpgrade = 0;
@@ -87,7 +88,7 @@ public class Wand extends Item  {
                         level.addFreshEntity(spellEntity);
                         int maxTickCooldown = compoundTag.getInt("scroll_cooldown");
                         maxTickCooldown = maxTickCooldown - maxTickCooldown * this.coolDownUpgrade / 100;
-                        player.getCooldowns().addCooldown(this,maxTickCooldown);
+                        player.getCooldowns().addCooldown(itemStack.getItem(),maxTickCooldown);
 
                         itemStack.hurtAndBreak(1,player,(player2) -> player2.broadcastBreakEvent(player2.getUsedItemHand()));
                     }
@@ -103,6 +104,7 @@ public class Wand extends Item  {
 
         return super.use(level, player, interactionHand);
     }
+
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {

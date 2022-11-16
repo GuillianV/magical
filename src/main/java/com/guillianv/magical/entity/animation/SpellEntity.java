@@ -53,7 +53,7 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     private static final EntityDataAccessor<Float> DATA_INITIAL_POS_Z = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
 
 
-    protected float scale = 1f;
+    static float scale = 1f;
 
 
 
@@ -78,6 +78,9 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
         return scale;
     }
 
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 
     public void setSenderId(int entityId){
         this.getEntityData().set(DATA_SENDER_ID, entityId);
