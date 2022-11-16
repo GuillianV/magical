@@ -14,17 +14,29 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModItems {
     public final static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Magical.MOD_ID);
 
+    public final static DeferredRegister<Item> ITEMS_SCROLL_COMMON = DeferredRegister.create(ForgeRegistries.ITEMS, Magical.MOD_ID);
+    public final static DeferredRegister<Item> ITEMS_SCROLL_UNCOMMON = DeferredRegister.create(ForgeRegistries.ITEMS, Magical.MOD_ID);
+    public final static DeferredRegister<Item> ITEMS_SCROLL_RARE = DeferredRegister.create(ForgeRegistries.ITEMS, Magical.MOD_ID);
+    public final static DeferredRegister<Item> ITEMS_SCROLL_EPIC = DeferredRegister.create(ForgeRegistries.ITEMS, Magical.MOD_ID);
+
+
     public static void register(IEventBus bus){
         ITEMS.register(bus);
+        ITEMS_SCROLL_COMMON.register(bus);
+        ITEMS_SCROLL_UNCOMMON.register(bus);
+        ITEMS_SCROLL_RARE.register(bus);
+        ITEMS_SCROLL_EPIC.register(bus);
     }
-
 
     public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(100).setNoRepair().defaultDurability(100).rarity(Rarity.COMMON)));
     public static final RegistryObject<Item> WAND_UNCOMMON = ITEMS.register("wand_uncommon",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(150).setNoRepair().defaultDurability(150).rarity(Rarity.UNCOMMON)));
 
 
-    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get()));
-    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get()));
+    //Scroll COMMON
+    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get()));
+
+    //Scroll EPIC
+    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get()));
 
 
 

@@ -1,6 +1,9 @@
 {
-  "replace": false,
+  "replace": true,
   "entries": [
-    "magical:scroll_in_chest"
+    "magical:scroll_in_chest_common",
+    "magical:scroll_in_chest_uncommon",
+    "magical:scroll_in_chest_rare",
+    "magical:scroll_in_chest_epic"
   ]
 }

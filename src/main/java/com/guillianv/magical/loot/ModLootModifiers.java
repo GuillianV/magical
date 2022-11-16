@@ -15,8 +15,17 @@ public class ModLootModifiers {
             DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MOD_ID);
 
 
-    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SCROLL_CHESTS =
-            LOOT_MODIFIER_SERIALIZERS.register("scroll_in_chest", ScrollInChest.CODEC);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SCROLL_CHESTS_COMMON =
+            LOOT_MODIFIER_SERIALIZERS.register("scroll_in_chest_common", ScrollInChestCommon.CODEC);
+
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SCROLL_CHESTS_UNCOMMON =
+            LOOT_MODIFIER_SERIALIZERS.register("scroll_in_chest_uncommon", ScrollInChestUncommon.CODEC);
+
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SCROLL_CHESTS_RARE =
+            LOOT_MODIFIER_SERIALIZERS.register("scroll_in_chest_rare", ScrollInChestRare.CODEC);
+
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SCROLL_CHESTS_EPIC =
+            LOOT_MODIFIER_SERIALIZERS.register("scroll_in_chest_epic", ScrollInChestEpic.CODEC);
 
 
     public static void register(IEventBus bus) {
