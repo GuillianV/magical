@@ -2,6 +2,7 @@ package com.guillianv.magical.blocks;
 
 import com.guillianv.magical.blocks.entity.ModBlockEntities;
 import com.guillianv.magical.blocks.entity.AltarBlockEntity;
+import com.guillianv.magical.items.Wand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -26,13 +27,6 @@ import org.jetbrains.annotations.Nullable;
 public class AltarBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(0,0,0,16,7,16);
-
-    @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-
-    }
-
 
 
     @Override

@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public final static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Magical.MOD_ID);
 
-    public static final RegistryObject<Block> ALTAR = registerBlock("altar",()-> new AltarBlock(BlockBehaviour.Properties.of(Material.STONE).noOcclusion()), ModCreativeTabs.MAGICAL_TAB);
+    public static final RegistryObject<Block> ALTAR = registerBlock("altar",()-> new AltarBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1f)), ModCreativeTabs.MAGICAL_TAB);
 
 
 

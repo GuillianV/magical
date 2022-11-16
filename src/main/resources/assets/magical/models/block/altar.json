@@ -1,6 +1,5 @@
 {
-  "credit": "Made with Blockbench",
-  "parent": "builtin/entity",
+  "parent": "block/cube_all",
   "textures": {
     "particle": "minecraft:block/smooth_stone"
   },
