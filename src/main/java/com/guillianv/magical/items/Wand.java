@@ -40,12 +40,14 @@ public class Wand extends Item  {
 
     static float scaleValue = 1;
 
+    int coolDownUpgrade = 0;
 
-    public Wand(Properties properties) {
+    public Wand(Properties properties, int coolDownUpgrade) {
         super(properties);
+        this.coolDownUpgrade = coolDownUpgrade;
     }
 
-    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack oldItemStack, ItemStack newItemStack){
+    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack oldItemStack, ItemStack newItemStack,int scrollBaseCooldow){
 
         if (oldItemStack.hasTag() && oldItemStack.getTag().contains("entity_type"))
             return false;
@@ -53,6 +55,7 @@ public class Wand extends Item  {
         CompoundTag tag = new CompoundTag();
         tag.putString("entity_type",entityTypeId);
         tag.putString("scroll_rarity",scrollRarity.name());
+        tag.putInt("scroll_cooldown",scrollBaseCooldow);
         newItemStack.readShareTag(tag);
         return true;
     }
@@ -73,7 +76,8 @@ public class Wand extends Item  {
         if (!level.isClientSide()){
                 ItemStack itemStack = player.getItemInHand(interactionHand);
                 CompoundTag compoundTag = itemStack.getShareTag();
-                if (itemStack.hasTag() && compoundTag.contains("entity_type")){
+                if (itemStack.hasTag() && compoundTag.contains("entity_type") && compoundTag.contains("scroll_cooldown")){
+
 
                     Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
                     if (typeOptional.isPresent()){
@@ -81,7 +85,9 @@ public class Wand extends Item  {
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
                         level.addFreshEntity(spellEntity);
-
+                        int maxTickCooldown = compoundTag.getInt("scroll_cooldown");
+                        maxTickCooldown = maxTickCooldown - maxTickCooldown * this.coolDownUpgrade / 100;
+                        player.getCooldowns().addCooldown(this,maxTickCooldown);
 
                         itemStack.hurtAndBreak(1,player,(player2) -> player2.broadcastBreakEvent(player2.getUsedItemHand()));
                     }

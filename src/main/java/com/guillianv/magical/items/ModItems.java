@@ -28,15 +28,15 @@ public class ModItems {
         ITEMS_SCROLL_EPIC.register(bus);
     }
 
-    public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(100).setNoRepair().defaultDurability(100).rarity(Rarity.COMMON)));
-    public static final RegistryObject<Item> WAND_UNCOMMON = ITEMS.register("wand_uncommon",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(150).setNoRepair().defaultDurability(150).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> WAND_NORMAL = ITEMS.register("wand_normal",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(100).setNoRepair().defaultDurability(100).rarity(Rarity.COMMON),0));
+    public static final RegistryObject<Item> WAND_UNCOMMON = ITEMS.register("wand_uncommon",() -> new Wand(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).durability(150).setNoRepair().defaultDurability(150).rarity(Rarity.UNCOMMON),50));
 
 
     //Scroll COMMON
-    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get()));
+    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get(),80));
 
     //Scroll EPIC
-    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get()));
+    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get(),60));
 
 
 

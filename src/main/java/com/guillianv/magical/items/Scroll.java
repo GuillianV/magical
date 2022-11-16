@@ -4,12 +4,10 @@ import com.guillianv.magical.entity.animation.SpellEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.builder.Animation;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-
 import java.util.Collection;
 import java.util.Random;
 
@@ -17,12 +15,22 @@ public class Scroll extends Item {
 
     public EntityType<? extends SpellEntity> entityType;
 
-    public Scroll(Properties properties, EntityType<? extends SpellEntity> _entityType ) {
-        super(properties);
-        entityType = _entityType;
+    protected int baseCooldownTick;
 
+    public Scroll(Properties properties, EntityType<? extends SpellEntity> _entityType, int baseCooldownTick) {
+        super(properties);
+        this.entityType = _entityType;
+        this.baseCooldownTick = baseCooldownTick;
     }
 
+    public int getBaseCooldownTick() {
+        return baseCooldownTick;
+    }
+
+    @Override
+    public boolean isFoil(ItemStack itemStack) {
+        return false;
+    }
 
     @Nullable
     public static Scroll getRandomScroll(Rarity rarity){

@@ -202,7 +202,7 @@ public class AltarBlockEntity extends BlockEntity implements MenuProvider, IAnim
                 ItemStack newItemStack = new ItemStack(newWand,wandMergedStack.getCount() + 1);
 
                 SpellEntity spellEntity = scroll.entityType.create(level);
-                if (newWand.setEntityType(spellEntity.entityClassId(),scroll.getRarity(newItemStack), wandStack ,newItemStack)){
+                if (newWand.setEntityType(spellEntity.entityClassId(),scroll.getRarity(newItemStack), wandStack ,newItemStack, scroll.getBaseCooldownTick())){
                     pEntity.itemHandler.extractItem(0, 1, false);
                     pEntity.itemHandler.extractItem(1, 1, false);
                     pEntity.itemHandler.setStackInSlot(2,newItemStack );
