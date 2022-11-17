@@ -35,7 +35,7 @@ public class ThunderStrikeRenderer extends GeoEntityRenderer<ThunderStrikeEntity
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
 
-        stack.scale(3,3,3);
+        stack.scale(2.5f,2.5f,2.5f);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }
