@@ -2,6 +2,7 @@ package com.guillianv.magical.items;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.ModEntityTypes;
+import com.guillianv.magical.items.utils.ScrollProperties;
 import com.guillianv.magical.tabs.ModCreativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -33,13 +34,13 @@ public class ModItems {
 
 
     //Scroll COMMON
-    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get(),80));
+    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(80,5).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON), ModEntityTypes.BOTTLE.get()));
 
     //Scroll RARE
-    public static final RegistryObject<Item> SCROLL_THUNDER_STRIKE = ITEMS_SCROLL_COMMON.register("scroll_thunder_strike",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE), ModEntityTypes.THUNDER_STRIKE.get(),100));
+    public static final RegistryObject<Item> SCROLL_THUNDER_STRIKE = ITEMS_SCROLL_COMMON.register("scroll_thunder_strike",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(100,5).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE), ModEntityTypes.THUNDER_STRIKE.get()));
 
     //Scroll EPIC
-    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll(new Item.Properties().tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get(),60));
+    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(60,5).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC), ModEntityTypes.FIREBALL.get()));
 
 
 

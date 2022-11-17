@@ -1,11 +1,13 @@
 package com.guillianv.magical.items;
 
 import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.items.utils.ScrollProperties;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
@@ -17,14 +19,19 @@ public class Scroll extends Item {
 
     protected int baseCooldownTick;
 
-    public Scroll(Properties properties, EntityType<? extends SpellEntity> _entityType, int baseCooldownTick) {
+    protected int cooldownModifier;
+
+    public Scroll(ScrollProperties properties, EntityType<? extends SpellEntity> _entityType) {
         super(properties);
         this.entityType = _entityType;
-        this.baseCooldownTick = baseCooldownTick;
+        this.baseCooldownTick = properties.getBaseCooldown();
+        this.cooldownModifier = properties.getCooldownModifier();
     }
 
-    public int getBaseCooldownTick() {
-        return baseCooldownTick;
+    @Override
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int intval, boolean bool) {
+        
+        super.inventoryTick(itemStack, level, entity, intval, bool);
     }
 
     @Override
@@ -50,6 +57,7 @@ public class Scroll extends Item {
         RegistryObject<Item> itemRegistryObject = (RegistryObject<Item>) items.toArray()[random.nextInt(items.size())];
         return (Scroll) itemRegistryObject.get();
     }
+
 
 
 }

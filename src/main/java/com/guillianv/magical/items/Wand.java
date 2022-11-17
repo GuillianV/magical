@@ -72,12 +72,14 @@ public class Wand extends Item  {
                         int maxTickCooldown = compoundTag.getInt("scroll_cooldown");
                         maxTickCooldown = maxTickCooldown - maxTickCooldown * this.coolDownUpgrade / 100;
 
-                        for ( ItemStack invetoryStack : player.inventoryMenu.getItems() ) {
+                        /* for ( ItemStack invetoryStack : player.inventoryMenu.getItems() ) {
 
                             if (invetoryStack.getItem() instanceof Wand){
-                                player.getCooldowns().addCooldown(invetoryStack.getItem(), maxTickCooldown);
+
                             }
-                        }
+                        } */
+                        player.getCooldowns().addCooldown(ModItems.WAND_NORMAL.get(), maxTickCooldown);
+                        player.getCooldowns().addCooldown(ModItems.WAND_UNCOMMON.get(), maxTickCooldown);
 
                         itemStack.hurtAndBreak(1,player,(p)->{});
                     }
