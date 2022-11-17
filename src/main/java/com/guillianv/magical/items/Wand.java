@@ -29,24 +29,12 @@ public class Wand extends Item  {
         this.coolDownUpgrade = coolDownUpgrade;
     }
 
-    public boolean setEntityType(String entityTypeId, Rarity scrollRarity, ItemStack oldItemStack, ItemStack newItemStack,int scrollBaseCooldow){
-
-        if (oldItemStack.hasTag() && oldItemStack.getTag().contains("entity_type"))
-            return false;
-
-        CompoundTag tag = new CompoundTag();
-        tag.putString("entity_type",entityTypeId);
-        tag.putString("scroll_rarity",scrollRarity.name());
-        tag.putInt("scroll_cooldown",scrollBaseCooldow);
-        newItemStack.readShareTag(tag);
-        return true;
-    }
 
 
 
     @Override
     public boolean isFoil(ItemStack pStack) {
-        return pStack.hasTag() && pStack.getShareTag().contains("entity_type") ;
+        return pStack.hasTag() && pStack.getShareTag().contains(Scroll.nbt_initialized) ;
     }
 
 
@@ -59,36 +47,27 @@ public class Wand extends Item  {
         if (!level.isClientSide()){
                 ItemStack itemStack = player.getItemInHand(interactionHand);
                 CompoundTag compoundTag = itemStack.getShareTag();
-                if (itemStack.hasTag() && compoundTag.contains("entity_type") && compoundTag.contains("scroll_cooldown")){
+                if (itemStack.hasTag() && compoundTag.contains(Scroll.nbt_entity_type) && compoundTag.contains(Scroll.nbt_cooldown)){
 
 
-                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
+                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString(Scroll.nbt_entity_type));
                     if (typeOptional.isPresent()){
 
 
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
                         level.addFreshEntity(spellEntity);
-                        int maxTickCooldown = compoundTag.getInt("scroll_cooldown");
-                        maxTickCooldown = maxTickCooldown - maxTickCooldown * this.coolDownUpgrade / 100;
 
-                        /* for ( ItemStack invetoryStack : player.inventoryMenu.getItems() ) {
+                        if (!player.isCreative()){
+                            player.getCooldowns().addCooldown(ModItems.WAND_NORMAL.get(), getCoolDownReduced(itemStack));
+                            player.getCooldowns().addCooldown(ModItems.WAND_UNCOMMON.get(), getCoolDownReduced(itemStack));
 
-                            if (invetoryStack.getItem() instanceof Wand){
+                            itemStack.hurtAndBreak(1,player,(p)->{});
+                        }
 
-                            }
-                        } */
-                        player.getCooldowns().addCooldown(ModItems.WAND_NORMAL.get(), maxTickCooldown);
-                        player.getCooldowns().addCooldown(ModItems.WAND_UNCOMMON.get(), maxTickCooldown);
 
-                        itemStack.hurtAndBreak(1,player,(p)->{});
                     }
                 }
-
-
-
-
-
 
         }
 
@@ -97,22 +76,30 @@ public class Wand extends Item  {
     }
 
 
+    int getCoolDownReduced(ItemStack itemStack){
+        int maxTickCooldown = 200;
+        if (itemStack.getShareTag().contains(Scroll.nbt_cooldown)){
+            maxTickCooldown = itemStack.getShareTag().getInt(Scroll.nbt_cooldown);
+            maxTickCooldown = maxTickCooldown - maxTickCooldown * this.coolDownUpgrade / 100;
+        }
+        return maxTickCooldown;
+    }
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+
         if (level != null){
-                if(itemStack.hasTag() && itemStack.getShareTag().contains("entity_type")) {
+                if(itemStack.hasTag() && itemStack.getShareTag().contains(Scroll.nbt_entity_type)) {
                     CompoundTag compoundTag = itemStack.getShareTag();
-                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString("entity_type"));
+                    Optional<EntityType<?>> typeOptional = EntityType.byString(compoundTag.getString(Scroll.nbt_entity_type));
                     if (typeOptional.isPresent()){
 
                         EntityType<SpellEntity> spellEntityEntityType = (EntityType<SpellEntity>) typeOptional.get();
                         SpellEntity spellEntity = spellEntityEntityType.create(level);
                         String spellDescription = spellEntity.spellDescription();
 
-                        if (compoundTag.contains("scroll_rarity")){
-
-                            String rarityString =compoundTag.getString("scroll_rarity");
+                        if (compoundTag.contains(Scroll.nbt_rarity)){
+                            String rarityString =compoundTag.getString(Scroll.nbt_rarity);
                             Rarity spellRarity = ItemUtils.getRarityWithStrings(rarityString);
 
                             components.add( Component.literal("Binded with scroll of ").append(ItemUtils.colorValueWithRarity(spellDescription,spellRarity)));
@@ -122,7 +109,12 @@ public class Wand extends Item  {
                         }
 
 
+                        if (compoundTag.contains(Scroll.nbt_cooldown)){
+                            components.add(Component.literal("Cooldown : "+ (getCoolDownReduced(itemStack)  /20f)+"s"));
                         }
+
+
+                    }
                 }
         }
 
