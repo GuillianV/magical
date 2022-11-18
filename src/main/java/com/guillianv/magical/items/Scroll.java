@@ -75,7 +75,7 @@ public class Scroll extends Item {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int intval, boolean bool) {
 
         initialize(itemStack,false);
-       // reveal(itemStack,true);
+        reveal(itemStack,true);
         super.inventoryTick(itemStack, level, entity, intval, bool);
     }
 

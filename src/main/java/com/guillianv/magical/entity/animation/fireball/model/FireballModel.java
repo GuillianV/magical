@@ -1,8 +1,4 @@
-package com.guillianv.magical.entity.animation.fireball.model;// Made with Blockbench 4.4.3
-// Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
-// Paste this class into your mod and generate all required imports
-
-
+package com.guillianv.magical.entity.animation.fireball.model;
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import net.minecraft.resources.ResourceLocation;

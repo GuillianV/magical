@@ -58,15 +58,37 @@ public class Ranking {
             return Component.literal("(").append(Component.literal(CRank.textValue)).withStyle(CRank.chatFormatting).append(Component.literal(")"));
         }else  if (actualValue == maxValue){
             return Component.literal("(").append(Component.literal(ZRank.textValue)).withStyle(ZRank.chatFormatting).append(Component.literal(")"));
-        }else  if (minValue + spaceValue > actualValue){
-            return Component.literal("(").append(Component.literal(BRank.textValue)).withStyle(BRank.chatFormatting).append(Component.literal(")"));
-        }else if(maxValue - spaceValue < actualValue){
-            return Component.literal("(").append(Component.literal(SRank.textValue)).withStyle(SRank.chatFormatting).append(Component.literal(")"));
-        }else if (maxValue - spaceValue >= actualValue && minValue + spaceValue <= actualValue ){
-            return Component.literal("(").append(Component.literal(ARank.textValue)).withStyle(ARank.chatFormatting).append(Component.literal(")"));
         }else {
-            return Component.literal("(").append(Component.literal("?")).withStyle(ChatFormatting.DARK_RED).append(Component.literal(")"));
+
+            if(spaceValue < 0){
+
+                if (actualValue > minValue + spaceValue){
+                    return Component.literal("(").append(Component.literal(BRank.textValue)).withStyle(BRank.chatFormatting).append(Component.literal(")"));
+                } else if(actualValue < maxValue - spaceValue){
+                    return Component.literal("(").append(Component.literal(SRank.textValue)).withStyle(SRank.chatFormatting).append(Component.literal(")"));
+                }else if (maxValue - spaceValue <= actualValue && minValue + spaceValue >= actualValue ){
+                    return Component.literal("(").append(Component.literal(ARank.textValue)).withStyle(ARank.chatFormatting).append(Component.literal(")"));
+                }else {
+                    return Component.literal("(").append(Component.literal("?")).withStyle(ChatFormatting.DARK_RED).append(Component.literal(")"));
+                }
+
+            }else {
+
+                if (minValue + spaceValue > actualValue){
+                    return Component.literal("(").append(Component.literal(BRank.textValue)).withStyle(BRank.chatFormatting).append(Component.literal(")"));
+                } else if( maxValue - spaceValue < actualValue){
+                    return Component.literal("(").append(Component.literal(SRank.textValue)).withStyle(SRank.chatFormatting).append(Component.literal(")"));
+                }else if (maxValue - spaceValue <= actualValue && minValue + spaceValue >= actualValue ){
+                    return Component.literal("(").append(Component.literal(ARank.textValue)).withStyle(ARank.chatFormatting).append(Component.literal(")"));
+                }else {
+                    return Component.literal("(").append(Component.literal("?")).withStyle(ChatFormatting.DARK_RED).append(Component.literal(")"));
+                }
+
+            }
+
         }
+
+
 
 
     }

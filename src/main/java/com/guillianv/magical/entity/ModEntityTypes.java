@@ -2,6 +2,7 @@ package com.guillianv.magical.entity;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
+import com.guillianv.magical.entity.animation.earth_fist.EarthFistEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import com.guillianv.magical.entity.animation.thunder_strike.ThunderStrikeEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,13 @@ public class ModEntityTypes  {
             ENTITY_TYPES.register("thunder_strike",
                     () -> EntityType.Builder.of(ThunderStrikeEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
                             .build(new ResourceLocation(Magical.MOD_ID, "thunder_strike").toString()));
+
+
+    public static final RegistryObject<EntityType<EarthFistEntity>> EARTH_FIST =
+            ENTITY_TYPES.register("earth_fist",
+                    () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "earth_fist").toString()));
+
 
 
 
