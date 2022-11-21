@@ -68,8 +68,18 @@ public class TornadoEntity extends SpellEntity {
 
     @Override
     public void tick() {
+        double equalize = 0;
 
-        this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  this.getLookAngle().y * speed, this.getZ() + this.getLookAngle().z * speed);
+            Block bottomBlock = level.getBlockState(new BlockPos(position().x,position().y-1,position().z)).getBlock();
+            Block topBlock = level.getBlockState(new BlockPos(position().x,position().y+1,position().z)).getBlock();
+            Block frontBlock  = level.getBlockState(new BlockPos(position().x + getLookAngle().x,position().y + 1,position().z + getLookAngle().z)).getBlock();
+
+            if (bottomBlock == Blocks.AIR )
+                equalize = -1;
+            else if (topBlock == Blocks.AIR && frontBlock != Blocks.AIR || topBlock != Blocks.AIR && frontBlock != Blocks.AIR)
+                equalize = +1;
+
+        this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  equalize , this.getZ() + this.getLookAngle().z * speed);
 
         if (!level.isClientSide()){
 
@@ -88,7 +98,6 @@ public class TornadoEntity extends SpellEntity {
 
 
         if (this.tickCount > 150){
-
             this.remove(RemovalReason.DISCARDED);
 
         }

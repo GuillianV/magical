@@ -34,7 +34,7 @@ public class TornadoRenderer extends GeoEntityRenderer<TornadoEntity> {
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
 
-        stack.scale(2.5f,2.5f,2.5f);
+        stack.scale(4.5f,4.5f,4.5f);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }
