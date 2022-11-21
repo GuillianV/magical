@@ -33,6 +33,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.Collections;
+
 public class ThrowableBlockEntity extends LivingEntity implements IAnimatable {
 
 
@@ -98,7 +100,17 @@ public class ThrowableBlockEntity extends LivingEntity implements IAnimatable {
 
     @Override
     public Iterable<ItemStack> getArmorSlots() {
-        return null;
+       return   Collections.emptyList();
+    }
+
+    @Override
+    public Iterable<ItemStack> getAllSlots() {
+        return   Collections.emptyList();
+    }
+
+    @Override
+    public boolean hasItemInSlot(EquipmentSlot p_21034_) {
+        return false;
     }
 
     @Override
@@ -132,6 +144,10 @@ public class ThrowableBlockEntity extends LivingEntity implements IAnimatable {
     }
 
 
+    @Override
+    public void setInvulnerable(boolean invulnerable) {
+        super.setInvulnerable(true);
+    }
 
     @Override
     public void tick() {

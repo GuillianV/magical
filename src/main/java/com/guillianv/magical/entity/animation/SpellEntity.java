@@ -13,8 +13,10 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +34,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.Collections;
 
 public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
 
@@ -201,13 +205,34 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource p_20122_) {
+    public boolean isInvulnerableTo(DamageSource damageSource) {
+
         return true;
     }
 
     @Override
+    public boolean hurt(DamageSource damageSource, float damages) {
+        return false;
+    }
+
+    @Override
+    public void setInvulnerable(boolean invulnerable) {
+        super.setInvulnerable(true);
+    }
+
+    @Override
     public Iterable<ItemStack> getArmorSlots() {
-        return null;
+        return  Collections.emptyList();
+    }
+
+    @Override
+    public Iterable<ItemStack> getAllSlots() {
+        return  Collections.emptyList();
+    }
+
+    @Override
+    public boolean hasItemInSlot(EquipmentSlot equipmentSlot) {
+        return false;
     }
 
     @Override

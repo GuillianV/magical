@@ -42,7 +42,10 @@ public class EarthFistEntity extends SpellEntity {
 
     private int radius = 1;
 
-    private float damage = 10f;
+    private float maxProjection = 3f;
+    private float damage = 15f;
+
+    private float maxDamage = 20f;
 
     public EarthFistEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -112,8 +115,21 @@ public class EarthFistEntity extends SpellEntity {
                 Vec3 force =  new  Vec3( entity.position().x- this.position().x , entity.position().y - this.position().y ,entity.position().z - this.position().z ).normalize();
                 float dist = this.distanceTo(entity);
 
-                entity.hurt(DamageSource.MAGIC,damage);
-                entity.setDeltaMovement(force.x * 1/ dist,0.4f* 1/ dist,force.z* 1/ dist);
+                float ratio = 1/ dist;
+
+                float damages = ratio * damage;
+                if (damages > maxDamage)
+                    damages = maxDamage;
+
+                entity.hurt(DamageSource.ANVIL,damages);
+
+                float projection = ratio;
+                if (projection > this.maxProjection)
+                    projection = maxProjection;
+
+
+
+                entity.setDeltaMovement(force.x * projection,0.4f* projection,force.z* projection);
             }
 
         }
