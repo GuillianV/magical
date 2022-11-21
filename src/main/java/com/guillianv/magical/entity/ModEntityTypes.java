@@ -6,6 +6,7 @@ import com.guillianv.magical.entity.animation.earth_fist.EarthFistEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
 import com.guillianv.magical.entity.animation.thunder_strike.ThunderStrikeEntity;
+import com.guillianv.magical.entity.animation.tornado.TornadoEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -37,8 +38,13 @@ public class ModEntityTypes  {
 
     public static final RegistryObject<EntityType<EarthFistEntity>> EARTH_FIST =
             ENTITY_TYPES.register("earth_fist",
-                    () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
+                    () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(0.1f,0.1f)
                             .build(new ResourceLocation(Magical.MOD_ID, "earth_fist").toString()));
+
+    public static final RegistryObject<EntityType<TornadoEntity>> TORNADO =
+            ENTITY_TYPES.register("tornado",
+                    () -> EntityType.Builder.of(TornadoEntity::new, MobCategory.MISC).fireImmune().sized(1f,1f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "tornado").toString()));
 
 
 

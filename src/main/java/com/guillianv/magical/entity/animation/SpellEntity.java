@@ -151,7 +151,7 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
         return factory;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    public  <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
         event.getController().setAnimation(builder());
 

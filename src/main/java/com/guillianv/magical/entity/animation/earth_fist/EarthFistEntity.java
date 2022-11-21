@@ -14,10 +14,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -51,6 +48,8 @@ public class EarthFistEntity extends SpellEntity {
         super(entityType, level);
 
     }
+
+
 
     boolean fisted = false;
     private int earthShakeZ= 0;
@@ -92,6 +91,7 @@ public class EarthFistEntity extends SpellEntity {
 
         return super.Init();
     }
+
 
     @Override
     public void tick() {
@@ -188,7 +188,7 @@ public class EarthFistEntity extends SpellEntity {
 
     @Override
     public String entityClassId() {
-        ResourceLocation resourceLocation = ModEntityTypes.THUNDER_STRIKE.getKey().location();
+        ResourceLocation resourceLocation = ModEntityTypes.EARTH_FIST.getKey().location();
         return resourceLocation.toString();
     }
 

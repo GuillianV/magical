@@ -35,6 +35,8 @@ public class ModItems {
 
     //Scroll COMMON
     public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(80,5).scrollType( ModEntityTypes.BOTTLE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> TORNADO = ITEMS_SCROLL_COMMON.register("scroll_tornado",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(150,50).scrollType( ModEntityTypes.TORNADO.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
+
 
     //Scroll UNCOMMON
     public static final RegistryObject<Item> SCROLL_EARTH_FIST = ITEMS_SCROLL_EPIC.register("scroll_earth_fist",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(150,15).scrollType(ModEntityTypes.EARTH_FIST.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
