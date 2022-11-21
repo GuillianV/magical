@@ -40,6 +40,10 @@ public class ModEntityTypes  {
                     () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
                             .build(new ResourceLocation(Magical.MOD_ID, "earth_fist").toString()));
 
+
+
+
+
     public static final RegistryObject<EntityType<ThrowableBlockEntity>> THROWABLE_BLOCK =
             ENTITY_TYPES.register("throwable_block",
                     () -> EntityType.Builder.of(ThrowableBlockEntity::new, MobCategory.MISC).fireImmune().sized(1,1)

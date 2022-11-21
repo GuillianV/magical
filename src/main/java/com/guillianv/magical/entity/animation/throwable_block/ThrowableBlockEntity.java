@@ -138,8 +138,8 @@ public class ThrowableBlockEntity extends LivingEntity implements IAnimatable {
         if (this.isOnGround() || this.tickCount > 100  ){
 
 
-            level.setBlockAndUpdate(new BlockPos(new BlockPos(position().x,position().y-1,position().z)).above(),Block.stateById(getBlockId()));
             if (!this.level.isClientSide()){
+                level.setBlockAndUpdate(new BlockPos(new BlockPos(position().x,position().y-1,position().z)).above(),Block.stateById(getBlockId()));
                 this.remove(RemovalReason.DISCARDED);
             }
 
