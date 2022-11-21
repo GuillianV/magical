@@ -4,6 +4,7 @@ import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
 import com.guillianv.magical.entity.animation.earth_fist.EarthFistEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
+import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
 import com.guillianv.magical.entity.animation.thunder_strike.ThunderStrikeEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -38,6 +39,11 @@ public class ModEntityTypes  {
             ENTITY_TYPES.register("earth_fist",
                     () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(1.5f,1.5f)
                             .build(new ResourceLocation(Magical.MOD_ID, "earth_fist").toString()));
+
+    public static final RegistryObject<EntityType<ThrowableBlockEntity>> THROWABLE_BLOCK =
+            ENTITY_TYPES.register("throwable_block",
+                    () -> EntityType.Builder.of(ThrowableBlockEntity::new, MobCategory.MISC).fireImmune().sized(1,1)
+                            .build(new ResourceLocation(Magical.MOD_ID, "throwable_block").toString()));
 
 
 

@@ -7,6 +7,8 @@ import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.bottle.render.BottleRenderer;
 import com.guillianv.magical.entity.animation.earth_fist.render.EarthFistRenderer;
 import com.guillianv.magical.entity.animation.fireball.render.FireballRenderer;
+import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
+import com.guillianv.magical.entity.animation.throwable_block.render.ThrowableBlockRenderer;
 import com.guillianv.magical.entity.animation.thunder_strike.render.ThunderStrikeRenderer;
 import com.guillianv.magical.screen.AltarScreen;
 import com.guillianv.magical.screen.ModMenuTypes;
@@ -39,6 +41,7 @@ public class ModEventClientBusEvents {
         EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
         EntityRenderers.register(ModEntityTypes.THUNDER_STRIKE.get(), ThunderStrikeRenderer::new);
         EntityRenderers.register(ModEntityTypes.EARTH_FIST.get(), EarthFistRenderer::new);
+        EntityRenderers.register(ModEntityTypes.THROWABLE_BLOCK.get(), ThrowableBlockRenderer::new);
 
     }
 }
