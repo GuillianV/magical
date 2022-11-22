@@ -20,8 +20,10 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -56,11 +58,17 @@ public class TornadoEntity extends SpellEntity {
 
     //region Override Methods
 
+
+
     @Override
     public boolean Init() {
 
 
-        setPos(position().x + getLookAngle().x,position().y + getLookAngle().y,position().z + getLookAngle().z);
+        double magn = Math.sqrt(Math.pow(getLookAngle().x(),2) + Math.pow(getLookAngle().z(),2)   );
+
+        Vec3 power = new Vec3(1/magn * getLookAngle().x,0,1/magn * getLookAngle().z);
+
+        setPos(position().x + power.x*2,position().y ,position().z + power.z*2);
 
         return super.Init();
     }
@@ -70,27 +78,68 @@ public class TornadoEntity extends SpellEntity {
     public void tick() {
         double equalize = 0;
 
+
+            double magn = Math.sqrt(Math.pow(getLookAngle().x(),2) + Math.pow(getLookAngle().z(),2)   );
+
+            Vec3 power = new Vec3(1/magn * getLookAngle().x,0,1/magn * getLookAngle().z);
+
             Block bottomBlock = level.getBlockState(new BlockPos(position().x,position().y-1,position().z)).getBlock();
-            Block topBlock = level.getBlockState(new BlockPos(position().x,position().y+1,position().z)).getBlock();
-            Block frontBlock  = level.getBlockState(new BlockPos(position().x + getLookAngle().x,position().y + 1,position().z + getLookAngle().z)).getBlock();
+            Block frontBlock  = level.getBlockState(new BlockPos(position().x + power.x,position().y ,position().z + power.z)).getBlock();
 
             if (bottomBlock == Blocks.AIR )
-                equalize = -1;
-            else if (topBlock == Blocks.AIR && frontBlock != Blocks.AIR || topBlock != Blocks.AIR && frontBlock != Blocks.AIR)
-                equalize = +1;
+                equalize = -0.3;
+            else if ( frontBlock != Blocks.AIR)
+                equalize = +0.3;
 
-        this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  equalize , this.getZ() + this.getLookAngle().z * speed);
+        this.setPos(this.getX() + power.x * speed , this.getY() +  equalize , this.getZ() + power.z * speed);
 
         if (!level.isClientSide()){
 
 
-            List<Entity> list  = this.level.getEntities(this, new AABB(this.getX() - 2.0D, this.getY() - 2.0D, this.getZ() - 2.0D, this.getX() + 2.0D, this.getY() + 6.0D + 2.0D, this.getZ() + 2.0D), Entity::isAlive);
+            List<Entity> list  = this.level.getEntities(this, new AABB(this.getX() - 3.0D, this.getY() - 3.0D, this.getZ() - 3.0D, this.getX() + 3.0D, this.getY() + 6.0D + 3.0D, this.getZ() + 3.0D), Entity::isAlive);
 
             for(Entity entity : list) {
 
-                entity.hurt(DamageSource.FALL,5);
-                entity.setDeltaMovement(0,1f + speed/1.5f,0);
+                if (entity != getSenderLivingEntity())
+                {
+                    entity.hurt(DamageSource.FALL,5);
+                    entity.setDeltaMovement(0,1f + speed/1.5f,0);
+                }
+
             }
+
+
+
+            BlockPos bottomBackPos = new BlockPos(this.getX() - power.x + random.nextInt(2)-1,this.getY()-1,this.getZ()- power.z + random.nextInt(2)-1) ;
+            Block block = level.getBlockState(bottomBackPos).getBlock();
+            if (block != Blocks.BEDROCK && level.removeBlock(bottomBackPos,true)){
+
+                block.getDescriptionId();
+                String blockTextureValue;
+                if (block == Blocks.GRASS_BLOCK)
+                    blockTextureValue = "dirt";
+                else
+                    blockTextureValue =block.getDescriptionId().replaceAll("block.minecraft.","");
+
+                blockTextureValue = "minecraft:textures/block/"+blockTextureValue+".png";
+
+
+                ThrowableBlockEntity throwableBlockEntity = new ThrowableBlockEntity(ModEntityTypes.THROWABLE_BLOCK.get(),level);
+                throwableBlockEntity.setPos(bottomBackPos.getX(),bottomBackPos.getY(),bottomBackPos.getZ());
+                throwableBlockEntity.setDeltaMovement(random.nextFloat()-0.5f,1.4f,random.nextFloat()-0.5f);
+                level.addFreshEntity(throwableBlockEntity);
+
+                Optional<Resource> resourceLocation = Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation(blockTextureValue));
+                if (resourceLocation.isPresent()){
+                    throwableBlockEntity.setTextureId(blockTextureValue);
+
+                    throwableBlockEntity.setBlockId(Block.getId(block.defaultBlockState()));
+
+                }
+
+
+            }
+
 
 
         }else{
@@ -108,6 +157,7 @@ public class TornadoEntity extends SpellEntity {
         }
 
     }
+
 
 
     @Override
