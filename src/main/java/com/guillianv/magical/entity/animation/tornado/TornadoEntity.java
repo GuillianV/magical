@@ -93,6 +93,11 @@ public class TornadoEntity extends SpellEntity {
             }
 
 
+        }else{
+
+            this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 1f, 0.8F + this.random.nextFloat() * 0.2F, false);
+            this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1f, 0.8F + this.random.nextFloat() * 0.2F, false);
+
         }
 
 

@@ -38,7 +38,7 @@ public class ModEntityTypes  {
 
     public static final RegistryObject<EntityType<EarthFistEntity>> EARTH_FIST =
             ENTITY_TYPES.register("earth_fist",
-                    () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(0.1f,0.1f)
+                    () -> EntityType.Builder.of(EarthFistEntity::new, MobCategory.MISC).fireImmune().sized(1f,1f)
                             .build(new ResourceLocation(Magical.MOD_ID, "earth_fist").toString()));
 
     public static final RegistryObject<EntityType<TornadoEntity>> TORNADO =
