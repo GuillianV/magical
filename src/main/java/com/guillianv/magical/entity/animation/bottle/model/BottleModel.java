@@ -9,20 +9,30 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class BottleModel extends AnimatedGeoModel<BottleEntity> {
-	
+
+
+	public static ResourceLocation geoModel = new ResourceLocation(Magical.MOD_ID, "geo/bottle.geo.json");
+
+	public static ResourceLocation texture = new ResourceLocation(Magical.MOD_ID, "textures/entity/bottle_texture.png");
+
+	public static ResourceLocation geoAnimation = new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json");
+
+	public static String animationName =  "animation.bottle.play";
+
+
 	@Override
 	public ResourceLocation getModelResource(BottleEntity object) {
-		return new ResourceLocation(Magical.MOD_ID, "geo/bottle.geo.json");
+		return BottleModel.geoModel;
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(BottleEntity object) {
-		return new ResourceLocation(Magical.MOD_ID, "textures/entity/bottle_texture.png");
+		return BottleModel.texture;
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(BottleEntity animatable) {
-		return new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json");
+		return BottleModel.geoAnimation;
 	}
 
 }

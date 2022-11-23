@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class AltarBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Block.box(0,0,0,16,7,16);
+    private static final VoxelShape SHAPE = Block.box(0,0,0,16,11,16);
 
 
     @Override

@@ -3,6 +3,7 @@ package com.guillianv.magical.entity.animation.fireball;
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.animation.fireball.model.FireballModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -93,12 +94,12 @@ public class FireballEntity extends SpellEntity {
 
     @Override
     public AnimationBuilder builder() {
-        return  new AnimationBuilder().addAnimation("animation.fireball.idle", ILoopType.EDefaultLoopTypes.LOOP);
+        return  new AnimationBuilder().addAnimation(FireballModel.animationName, ILoopType.EDefaultLoopTypes.LOOP);
     }
 
     @Override
     public Animation animation() {
-        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json")).getAnimation("animation.fireball.idle");
+        return GeckoLibCache.getInstance().getAnimations().get(FireballModel.geoAnimation).getAnimation(FireballModel.animationName);
     }
 
     //endregion

@@ -67,14 +67,10 @@ public class TornadoEntity extends SpellEntity {
 
     @Override
     public boolean Init() {
-
-
         double magn = Math.sqrt(Math.pow(getLookAngle().x(),2) + Math.pow(getLookAngle().z(),2)   );
-
         Vec3 power = new Vec3(1/magn * getLookAngle().x,0,1/magn * getLookAngle().z);
-
         setPos(position().x + power.x*2,position().y ,position().z + power.z*2);
-
+        setScale(4.5f);
         return super.Init();
     }
 

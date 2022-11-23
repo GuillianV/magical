@@ -24,7 +24,6 @@ public class CelestialBlessingEntity extends SpellEntity {
 
     private int absorptionAmplifier = 0;
 
-
     private int instantHealDuration = 1;
 
     private int instantHealAmplifier = 0;
@@ -76,6 +75,8 @@ public class CelestialBlessingEntity extends SpellEntity {
         livingEntity.addEffect(heal);
         livingEntity.addEffect(regeneration);
 
+        this.setScale(2.5f);
+
         return super.Init();
     }
 
@@ -97,7 +98,8 @@ public class CelestialBlessingEntity extends SpellEntity {
 
         LivingEntity sender =getSenderLivingEntity();
 
-        setPos(sender.position());
+        if (sender != null)
+            setPos(sender.position());
 
         super.tick();
     }

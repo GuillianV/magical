@@ -5,22 +5,33 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class FireballModel extends AnimatedGeoModel<FireballEntity> {
-	
+
+
+
+	public static ResourceLocation geoModel = new ResourceLocation(Magical.MOD_ID, "geo/fireball.geo.json");
+
+	public static ResourceLocation texture = new ResourceLocation(Magical.MOD_ID, "textures/entity/fireball_texture.png");
+
+	public static ResourceLocation geoAnimation = new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json");
+
+	public static String animationName =  "animation.fireball.idle";
+
+
 	@Override
 	public ResourceLocation getModelResource(FireballEntity object) {
-		return new ResourceLocation(Magical.MOD_ID, "geo/fireball.geo.json");
+		return FireballModel.geoModel;
 	}
 
 
 
 	@Override
 	public ResourceLocation getTextureResource(FireballEntity object) {
-		return new ResourceLocation(Magical.MOD_ID, "textures/entity/fireball_texture.png");
+		return FireballModel.texture;
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(FireballEntity animatable) {
-		return new ResourceLocation(Magical.MOD_ID, "animations/fireball.animation.json");
+		return FireballModel.geoAnimation;
 	}
 
 }

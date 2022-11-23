@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 public class FireballRenderer extends GeoEntityRenderer<FireballEntity> {
 
-    public static ResourceLocation resourceLocation =  new ResourceLocation(Magical.MOD_ID, "textures/entity/fireball_texture.png");
 
     @Override
     protected int getBlockLightLevel(FireballEntity fireballEntity, BlockPos blockPos) {
@@ -41,7 +40,7 @@ public class FireballRenderer extends GeoEntityRenderer<FireballEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(FireballEntity instance) {
-        return resourceLocation;
+        return FireballModel.texture;
     }
 
     @Override

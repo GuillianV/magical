@@ -34,7 +34,7 @@ public class CelestialBlessingRenderer extends GeoEntityRenderer<CelestialBlessi
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
 
-        stack.scale(1.5f,1.5f,1.5f);
+        stack.scale(animatable.getScale(), animatable.getScale(), animatable.getScale());
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }

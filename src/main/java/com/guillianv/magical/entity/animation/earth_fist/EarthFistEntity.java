@@ -77,7 +77,7 @@ public class EarthFistEntity extends SpellEntity {
         BlockHitResult ray = BlockUtils.simpleRayTrace(level, this,this.getInitialPos() ,this.getXRot(),this.getYRot(), ClipContext.Fluid.NONE);
         BlockPos lookPos = ray.getBlockPos();
 
-        if (ray.distanceTo(getSenderLivingEntity()) > 10000){
+        if (ray.distanceTo(getSenderLivingEntity()) > 1000){
             return false;
         }
 
@@ -88,6 +88,7 @@ public class EarthFistEntity extends SpellEntity {
 
         earthShakeZ = -radius;
 
+        this.setScale(2.5f);
 
         return super.Init();
     }

@@ -36,7 +36,7 @@ public class ThrowableBlockRenderer extends GeoEntityRenderer<ThrowableBlockEnti
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
 
-        stack.scale(1,1,1);
+        stack.scale(animatable.getScale(), animatable.getScale(), animatable.getScale());
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }

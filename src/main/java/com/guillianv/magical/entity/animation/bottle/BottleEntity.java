@@ -4,6 +4,7 @@ import com.guillianv.magical.Magical;
 import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.animation.bottle.model.BottleModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +26,9 @@ public class BottleEntity extends SpellEntity {
 
     boolean spawnPoison = false;
     private int areaRadius = 4 ;
-    private int areaDuration = 100; //effet de 10s
-    private int effectDuration = 100; //2.5s de poison
-    private int effectAmplifier = 1; //Poison lvl 1
+    private int areaDuration = 150; //effet de 10s
+    private int effectDuration = 150; //2.5s de poison
+    private int effectAmplifier = 2; //Poison lvl 1
 
 
     public BottleEntity(EntityType<? extends LivingEntity> entityType, Level level) {
@@ -51,12 +52,12 @@ public class BottleEntity extends SpellEntity {
 
     @Override
     public AnimationBuilder builder() {
-        return  new AnimationBuilder().addAnimation("animation.bottle.play", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+        return  new AnimationBuilder().addAnimation(BottleModel.animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     }
 
     @Override
     public Animation animation() {
-        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/bottle.animation.json")).getAnimation("animation.bottle.play");
+        return GeckoLibCache.getInstance().getAnimations().get(BottleModel.geoAnimation).getAnimation(BottleModel.animationName);
     }
 
     //endregion
@@ -70,7 +71,7 @@ public class BottleEntity extends SpellEntity {
         BlockHitResult ray = BlockUtils.simpleRayTrace(level, this,this.getInitialPos() ,this.getXRot(),this.getYRot(), ClipContext.Fluid.NONE);
         BlockPos lookPos = ray.getBlockPos();
 
-        if (ray.distanceTo(getSenderLivingEntity()) > 10000){
+        if (ray.distanceTo(getSenderLivingEntity()) > 1000){
             return false;
         }
 

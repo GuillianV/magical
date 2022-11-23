@@ -19,14 +19,14 @@ public class BottleRenderer extends GeoEntityRenderer<BottleEntity> {
     public BottleRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BottleModel());
         this.shadowRadius = 0.15f;
-
+        this.shadowStrength = 0.15f;
     }
 
 
 
     @Override
     public ResourceLocation getTextureLocation(BottleEntity instance) {
-        return new ResourceLocation(Magical.MOD_ID, "textures/entity/bottle_texture.png");
+        return BottleModel.texture;
     }
 
     @Override

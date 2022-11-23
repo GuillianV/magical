@@ -26,7 +26,7 @@ public class ThunderStrikeRenderer extends GeoEntityRenderer<ThunderStrikeEntity
 
     @Override
     public ResourceLocation getTextureLocation(ThunderStrikeEntity instance) {
-        return new ResourceLocation(Magical.MOD_ID, "textures/entity/thunder_strike_texture.png");
+        return ThunderStrikeModel.texture;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ThunderStrikeRenderer extends GeoEntityRenderer<ThunderStrikeEntity
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
 
-        stack.scale(2.5f,2.5f,2.5f);
+        stack.scale(animatable.getScale(), animatable.getScale(), animatable.getScale());
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }

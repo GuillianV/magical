@@ -4,6 +4,7 @@ import com.guillianv.magical.Magical;
 import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.animation.thunder_strike.model.ThunderStrikeModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -29,19 +30,19 @@ public class ThunderStrikeEntity extends SpellEntity {
         super(entityType, level);
 
     }
-
     boolean thundered = false;
+
 
     //region Animation
 
     @Override
     public AnimationBuilder builder() {
-        return  new AnimationBuilder().addAnimation("animation.thunder_strike.play", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+        return  new AnimationBuilder().addAnimation(ThunderStrikeModel.animationName, ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     }
 
     @Override
     public Animation animation() {
-        return GeckoLibCache.getInstance().getAnimations().get(new ResourceLocation(Magical.MOD_ID, "animations/thunder_strike.animation.json")).getAnimation("animation.thunder_strike.play");
+        return GeckoLibCache.getInstance().getAnimations().get(ThunderStrikeModel.geoAnimation).getAnimation(ThunderStrikeModel.animationName);
     }
 
     //endregion
@@ -55,12 +56,14 @@ public class ThunderStrikeEntity extends SpellEntity {
         BlockHitResult ray = BlockUtils.simpleRayTrace(level, this,this.getInitialPos() ,this.getXRot(),this.getYRot(), ClipContext.Fluid.NONE);
         BlockPos lookPos = ray.getBlockPos();
 
-        if (ray.distanceTo(getSenderLivingEntity()) > 10000){
+        LivingEntity livingEntity = getSenderLivingEntity();
+        if (livingEntity != null && ray.distanceTo(livingEntity) > 1000){
             return false;
         }
 
         Vec3 position = new Vec3(lookPos.getX() +0.5,lookPos.getY() + 1,lookPos.getZ()+0.5);
         setPos(position);
+        setScale(2.5f);
         return super.Init();
     }
 
