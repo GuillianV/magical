@@ -2,6 +2,7 @@ package com.guillianv.magical.entity;
 
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.animation.bottle.BottleEntity;
+import com.guillianv.magical.entity.animation.celestial_blessing.CelestialBlessingEntity;
 import com.guillianv.magical.entity.animation.earth_fist.EarthFistEntity;
 import com.guillianv.magical.entity.animation.fireball.FireballEntity;
 import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
@@ -46,6 +47,12 @@ public class ModEntityTypes  {
                     () -> EntityType.Builder.of(TornadoEntity::new, MobCategory.MISC).fireImmune().sized(1f,1f)
                             .build(new ResourceLocation(Magical.MOD_ID, "tornado").toString()));
 
+
+
+    public static final RegistryObject<EntityType<CelestialBlessingEntity>> CELESTIAL_BLESSING =
+            ENTITY_TYPES.register("celestial_blessing",
+                    () -> EntityType.Builder.of(CelestialBlessingEntity::new, MobCategory.MISC).fireImmune().sized(0.1f,0.1f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "celestial_blessing").toString()));
 
 
 

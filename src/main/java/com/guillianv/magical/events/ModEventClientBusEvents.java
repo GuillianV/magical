@@ -5,6 +5,7 @@ import com.guillianv.magical.blocks.entity.ModBlockEntities;
 import com.guillianv.magical.blocks.render.AltarBlockRenderer;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.animation.bottle.render.BottleRenderer;
+import com.guillianv.magical.entity.animation.celestial_blessing.render.CelestialBlessingRenderer;
 import com.guillianv.magical.entity.animation.earth_fist.render.EarthFistRenderer;
 import com.guillianv.magical.entity.animation.fireball.render.FireballRenderer;
 import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
@@ -44,6 +45,7 @@ public class ModEventClientBusEvents {
         EntityRenderers.register(ModEntityTypes.EARTH_FIST.get(), EarthFistRenderer::new);
         EntityRenderers.register(ModEntityTypes.THROWABLE_BLOCK.get(), ThrowableBlockRenderer::new);
         EntityRenderers.register(ModEntityTypes.TORNADO.get(), TornadoRenderer::new);
+        EntityRenderers.register(ModEntityTypes.CELESTIAL_BLESSING.get(), CelestialBlessingRenderer::new);
 
     }
 }

@@ -45,6 +45,8 @@ public class ModItems {
 
     //Scroll RARE
     public static final RegistryObject<Item> SCROLL_THUNDER_STRIKE = ITEMS_SCROLL_COMMON.register("scroll_thunder_strike",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(100,5).scrollType(ModEntityTypes.THUNDER_STRIKE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> CELESTIAL_BLESSING = ITEMS_SCROLL_COMMON.register("scroll_celestial_blessing",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(600,85).scrollType(ModEntityTypes.CELESTIAL_BLESSING.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
+
 
     //Scroll EPIC
     public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(60,5).scrollType(ModEntityTypes.FIREBALL.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
