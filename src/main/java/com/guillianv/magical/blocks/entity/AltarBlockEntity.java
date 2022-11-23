@@ -1,7 +1,5 @@
 package com.guillianv.magical.blocks.entity;
 
-import com.guillianv.magical.entity.animation.SpellEntity;
-import com.guillianv.magical.items.ModItems;
 import com.guillianv.magical.items.Scroll;
 import com.guillianv.magical.items.Wand;
 import com.guillianv.magical.screen.AltarMenu;
@@ -16,7 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

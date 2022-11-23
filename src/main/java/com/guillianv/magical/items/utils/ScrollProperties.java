@@ -1,10 +1,8 @@
 package com.guillianv.magical.items.utils;
 
-import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.spells.SpellEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-
-import java.util.Random;
 
 public class ScrollProperties extends Item.Properties {
 

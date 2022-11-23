@@ -1,13 +1,13 @@
 package com.guillianv.magical.entity;
 
 import com.guillianv.magical.Magical;
-import com.guillianv.magical.entity.animation.bottle.BottleEntity;
-import com.guillianv.magical.entity.animation.celestial_blessing.CelestialBlessingEntity;
-import com.guillianv.magical.entity.animation.earth_fist.EarthFistEntity;
-import com.guillianv.magical.entity.animation.fireball.FireballEntity;
-import com.guillianv.magical.entity.animation.throwable_block.ThrowableBlockEntity;
-import com.guillianv.magical.entity.animation.thunder_strike.ThunderStrikeEntity;
-import com.guillianv.magical.entity.animation.tornado.TornadoEntity;
+import com.guillianv.magical.entity.spells.bottle.BottleEntity;
+import com.guillianv.magical.entity.spells.celestial_blessing.CelestialBlessingEntity;
+import com.guillianv.magical.entity.spells.earth_fist.EarthFistEntity;
+import com.guillianv.magical.entity.spells.fireball.FireballEntity;
+import com.guillianv.magical.entity.spells.throwable_block.ThrowableBlockEntity;
+import com.guillianv.magical.entity.spells.thunder_strike.ThunderStrikeEntity;
+import com.guillianv.magical.entity.spells.tornado.TornadoEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

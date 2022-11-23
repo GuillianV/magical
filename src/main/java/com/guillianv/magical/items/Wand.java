@@ -1,6 +1,6 @@
 package com.guillianv.magical.items;
 
-import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.spells.SpellEntity;
 import com.guillianv.magical.items.utils.ItemUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Wand extends Item  {
 

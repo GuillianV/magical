@@ -1,7 +1,7 @@
 package com.guillianv.magical.items;
 
 import com.guillianv.magical.Magical;
-import com.guillianv.magical.entity.animation.SpellEntity;
+import com.guillianv.magical.entity.spells.SpellEntity;
 import com.guillianv.magical.items.utils.Ranking;
 import com.guillianv.magical.items.utils.ScrollProperties;
 import net.minecraft.ChatFormatting;
