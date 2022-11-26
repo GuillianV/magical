@@ -10,6 +10,8 @@
   "item.magical.scroll_celestial_blessing" : "Scroll of celestial blessing",
 
   "block.magical.altar" : "Altar",
+  "block.magical.recognizer_block" : "Recognizer",
+
 
   "itemGroup.magical_tab": "Magical"
 }

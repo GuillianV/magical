@@ -3,6 +3,7 @@ package com.guillianv.magical.events;
 import com.guillianv.magical.Magical;
 import com.guillianv.magical.blocks.entity.ModBlockEntities;
 import com.guillianv.magical.blocks.render.AltarBlockRenderer;
+import com.guillianv.magical.blocks.render.RecognizerBlockRenderer;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.bottle.render.BottleRenderer;
 import com.guillianv.magical.entity.spells.celestial_blessing.render.CelestialBlessingRenderer;
@@ -13,6 +14,7 @@ import com.guillianv.magical.entity.spells.thunder_strike.render.ThunderStrikeRe
 import com.guillianv.magical.entity.spells.tornado.render.TornadoRenderer;
 import com.guillianv.magical.screen.AltarScreen;
 import com.guillianv.magical.screen.ModMenuTypes;
+import com.guillianv.magical.screen.RecognizerScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,6 +30,7 @@ public class ModEventClientBusEvents {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.ALTAR.get(), AltarBlockRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.RECOGNIZER.get(), RecognizerBlockRenderer::new);
     }
 
 
@@ -35,6 +38,8 @@ public class ModEventClientBusEvents {
     public static void onClientSetup(FMLClientSetupEvent event)
     {
         MenuScreens.register(ModMenuTypes.ALTAR_MENU.get(), AltarScreen::new);
+        MenuScreens.register(ModMenuTypes.RECOGNIZER_MENU.get(), RecognizerScreen::new);
+
         EntityRenderers.register(ModEntityTypes.BOTTLE.get(), BottleRenderer::new);
         EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
         EntityRenderers.register(ModEntityTypes.THUNDER_STRIKE.get(), ThunderStrikeRenderer::new);

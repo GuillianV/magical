@@ -13,6 +13,7 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Magical.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<AltarBlockEntity>> ALTAR = BLOCK_ENTITY_TYPE.register("altar", ()-> BlockEntityType.Builder.of(AltarBlockEntity::new, ModBlocks.ALTAR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<RecognizerBlockEntity>> RECOGNIZER = BLOCK_ENTITY_TYPE.register("recognizer", ()-> BlockEntityType.Builder.of(RecognizerBlockEntity::new, ModBlocks.RECOGNIZER.get()).build(null));
 
 
     public static void register(IEventBus bus){

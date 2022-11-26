@@ -16,6 +16,10 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<AltarMenu>> ALTAR_MENU =
             registerMenuType(AltarMenu::new, "altar_menu");
 
+    public static final RegistryObject<MenuType<RecognizerMenu>> RECOGNIZER_MENU =
+            registerMenuType(RecognizerMenu::new, "recognizer_menu");
+
+
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                   String name) {
