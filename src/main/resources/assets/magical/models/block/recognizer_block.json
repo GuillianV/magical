@@ -2,7 +2,8 @@
 {
 
   "textures": {
-    "0": "magical:block/recognizer_block_texture"
+    "0": "magical:block/recognizer_block_texture",
+    "particle": "minecraft:block/smooth_stone"
   },
   "elements": [
     {

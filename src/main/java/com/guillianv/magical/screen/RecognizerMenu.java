@@ -51,7 +51,7 @@ public class RecognizerMenu extends AbstractContainerMenu {
     public int getScaledProgress() {
         int progress = this.blockEntity.getProgress();
         int maxProgress = this.blockEntity.getMaxProgress();  // Max Progress
-        int progressArrowSize = 22; // This is the height in pixels of your arrow
+        int progressArrowSize = 18; // This is the height in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }

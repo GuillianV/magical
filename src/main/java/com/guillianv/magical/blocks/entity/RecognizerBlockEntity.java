@@ -3,6 +3,7 @@ package com.guillianv.magical.blocks.entity;
 import com.guillianv.magical.blocks.RecognizerBlock;
 import com.guillianv.magical.blocks.model.RecognizerBlockModel;
 import com.guillianv.magical.blocks.render.RecognizerBlockRenderer;
+import com.guillianv.magical.entity.spells.bottle.model.BottleModel;
 import com.guillianv.magical.items.Scroll;
 import com.guillianv.magical.items.Wand;
 import com.guillianv.magical.screen.RecognizerMenu;
@@ -11,6 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -31,12 +34,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, IAnimatable {
@@ -48,6 +53,8 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
     protected int maxProgress =600;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+    private Animation animation = GeckoLibCache.getInstance().getAnimations().get(RecognizerBlockModel.geoAnimation).getAnimation(RecognizerBlockModel.animationName);
 
 
     public boolean isCraftable(){
@@ -96,6 +103,8 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
             setChanged();
         }
     };
+
+
 
 
     public RecognizerBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -195,6 +204,8 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
     //On each tick
     public static void tick(Level level, BlockPos pos, BlockState state, RecognizerBlockEntity pEntity) {
 
+
+
         ItemStack scrollStack = pEntity.itemHandler.getStackInSlot(0);
         ItemStack revealedScrollStack = pEntity.itemHandler.getStackInSlot(1);
 
@@ -215,6 +226,14 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
                 pEntity.itemHandler.setStackInSlot(1,newItemStack );
 
             }else {
+
+
+                if (level.isClientSide() && pEntity.data.get(1) %  pEntity.animation.animationLength == 0 ){
+                    level.playLocalSound(pEntity.worldPosition.getX(), pEntity.worldPosition.getY(), pEntity.worldPosition.getZ(), SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.WEATHER, 2f, 1F, false);
+
+                }
+
+
                 pEntity.data.set(1,pEntity.data.get(1)+1);
             }
 
@@ -238,7 +257,7 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
         AnimationBuilder animationBuilder =  new AnimationBuilder().addAnimation(RecognizerBlockModel.animationName, ILoopType.EDefaultLoopTypes.LOOP);
         event.getController().setAnimation(animationBuilder);
 
-        return PlayState.CONTINUE;
+        return data.get(1) != 0 ? PlayState.CONTINUE :  PlayState.STOP;
     }
 
     @Override
