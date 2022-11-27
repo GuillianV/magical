@@ -6,6 +6,7 @@ import com.guillianv.magical.blocks.render.RecognizerBlockRenderer;
 import com.guillianv.magical.items.Scroll;
 import com.guillianv.magical.items.Wand;
 import com.guillianv.magical.screen.RecognizerMenu;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +44,9 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
     protected final ContainerData data;
 
     protected boolean craftable = false;
+    protected int progress = 0;
+    protected int maxProgress =600;
+
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
 
@@ -51,20 +55,24 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(3){
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2){
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
 
             switch (slot){
                 case 0:
-                    if (stack.getItem() instanceof Wand)
-                        return true;
+                    if (stack.getItem() instanceof Scroll){
+                        if (stack.hasTag() && stack.getShareTag().contains(Scroll.nbt_initialized) && stack.getShareTag().contains(Scroll.nbt_revealed)){
+                            if (!stack.getShareTag().getBoolean(Scroll.nbt_revealed))
+                            {
+                                return true;
+                            }
+
+                        }
+                    }
                     break;
                 case 1 :
-                    if (stack.getItem() instanceof Scroll)
-                        return true;
-                case 2:
                     return false;
 
             }
@@ -76,11 +84,7 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
 
         @Override
         protected void onContentsChanged(int slot) {
-            if (slot == 2 && itemHandler.getStackInSlot(2).getCount() > 0){
-                data.set(0,1);
-            }else  {
-                data.set(0,0);
-            }
+
             setChanged();
         }
     };
@@ -94,6 +98,7 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
             public int get(int index) {
                 switch (index) {
                     case 0: return ( RecognizerBlockEntity.this.isCraftable()) ? 1 : 0;
+                    case 1: return   RecognizerBlockEntity.this.progress;
                     default: return 0;
                 }
             }
@@ -102,13 +107,14 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
             public void set(int index, int value) {
                 switch(index) {
                     case 0: RecognizerBlockEntity.this.craftable = value == 1   ; break;
+                    case 1: RecognizerBlockEntity.this.progress = value ; break;
                 }
 
             }
 
             @Override
             public int getCount() {
-                return 1;
+                return 2;
             }
         };
 
@@ -181,29 +187,23 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
     //On each tick
     public static void tick(Level level, BlockPos pos, BlockState state, RecognizerBlockEntity pEntity) {
 
-        ItemStack wandStack = pEntity.itemHandler.getStackInSlot(0);
-        ItemStack scrollStack = pEntity.itemHandler.getStackInSlot(1);
-        ItemStack wandMergedStack = pEntity.itemHandler.getStackInSlot(2);
+        ItemStack scrollStack = pEntity.itemHandler.getStackInSlot(0);
+        ItemStack revealedScrollStack = pEntity.itemHandler.getStackInSlot(1);
 
-        Wand wand = null;
         Scroll scroll = null;
-
-        if (wandStack.getItem() instanceof Wand)
-            wand = (Wand) wandStack.getItem();
-
 
         if (scrollStack.getItem() instanceof Scroll)
             scroll = (Scroll) scrollStack.getItem();
 
 
-        if (scroll != null && wand != null && wandMergedStack.getCount() == 0){
+        if (scroll != null && revealedScrollStack.getCount() == 0){
 
-                Wand newWand = (Wand) wandStack.copy().getItem();
-                ItemStack newItemStack = new ItemStack(newWand,wandMergedStack.getCount() + 1);
+                Scroll newScroll = (Scroll) scrollStack.copy().getItem();
+                ItemStack newItemStack = new ItemStack(newScroll,revealedScrollStack.getCount() + 1);
                 newItemStack.readShareTag(scrollStack.getShareTag());
+                newScroll.reveal(newItemStack,true);
                 pEntity.itemHandler.extractItem(0, 1, false);
-                pEntity.itemHandler.extractItem(1, 1, false);
-                pEntity.itemHandler.setStackInSlot(2,newItemStack );
+                pEntity.itemHandler.setStackInSlot(1,newItemStack );
 
 
 

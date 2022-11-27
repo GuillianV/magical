@@ -27,11 +27,11 @@ public class Scroll extends Item {
     public int baseCooldownTick;
     protected int cooldownModifier;
 
-    final static String nbt_initialized = "Scroll_Initialized";
-    final static String nbt_revealed = "Scroll_Revealed";
-    final static String nbt_cooldown = "Scroll_Cooldown";
-    final static String nbt_entity_type = "Scroll_EntityType";
-    final static String nbt_rarity = "Scroll_Rarity";
+    public final static String nbt_initialized = "Scroll_Initialized";
+    public final static String nbt_revealed = "Scroll_Revealed";
+    public final static String nbt_cooldown = "Scroll_Cooldown";
+    public final static String nbt_entity_type = "Scroll_EntityType";
+    public final static String nbt_rarity = "Scroll_Rarity";
 
     public Scroll(ScrollProperties properties) {
         super(properties);
@@ -75,7 +75,6 @@ public class Scroll extends Item {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int intval, boolean bool) {
 
         initialize(itemStack,false);
-        reveal(itemStack,true);
         super.inventoryTick(itemStack, level, entity, intval, bool);
     }
 

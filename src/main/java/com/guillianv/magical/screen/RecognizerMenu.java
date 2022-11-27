@@ -25,7 +25,7 @@ public class RecognizerMenu extends AbstractContainerMenu {
 
     public RecognizerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.RECOGNIZER_MENU.get(), id);
-        checkContainerSize(inv, 3);
+        checkContainerSize(inv, 2);
         blockEntity = (RecognizerBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
@@ -34,9 +34,8 @@ public class RecognizerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 26, 34));
-            this.addSlot(new SlotItemHandler(handler, 1, 62, 34));
-            this.addSlot(new SlotItemHandler(handler, 2, 116, 34));
+            this.addSlot(new SlotItemHandler(handler, 0, 54, 34));
+            this.addSlot(new SlotItemHandler(handler, 1, 108, 34));
         });
 
 
@@ -72,7 +71,7 @@ public class RecognizerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
