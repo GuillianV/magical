@@ -32,10 +32,8 @@ public class RecognizerScreen extends AbstractContainerScreen<RecognizerMenu> {
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        this.blit(pPoseStack, x + 79, y +35, 176, 0, menu.getScaledProgress(), 13);
 
-        if (this.menu.canCraft()){
-            this.blit(pPoseStack, x + 87, y +35, 176, 0, 23, 13);
-        }
     }
 
     @Override

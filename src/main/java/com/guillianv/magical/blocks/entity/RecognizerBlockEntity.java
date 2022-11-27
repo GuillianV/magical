@@ -54,6 +54,14 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
         return this.craftable;
     }
 
+    public int getProgress(){
+        return this.progress;
+    }
+
+    public int getMaxProgress(){
+        return this.maxProgress;
+    }
+
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2){
 
@@ -198,6 +206,7 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
 
         if (scroll != null && revealedScrollStack.getCount() == 0){
 
+            if (pEntity.data.get(1) >= pEntity.maxProgress){
                 Scroll newScroll = (Scroll) scrollStack.copy().getItem();
                 ItemStack newItemStack = new ItemStack(newScroll,revealedScrollStack.getCount() + 1);
                 newItemStack.readShareTag(scrollStack.getShareTag());
@@ -205,9 +214,12 @@ public class RecognizerBlockEntity extends BlockEntity implements MenuProvider, 
                 pEntity.itemHandler.extractItem(0, 1, false);
                 pEntity.itemHandler.setStackInSlot(1,newItemStack );
 
+            }else {
+                pEntity.data.set(1,pEntity.data.get(1)+1);
+            }
 
-
-
+        }else {
+            pEntity.data.set(1,0);
         }
 
     }

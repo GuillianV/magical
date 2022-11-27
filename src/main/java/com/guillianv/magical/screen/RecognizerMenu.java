@@ -20,7 +20,7 @@ public class RecognizerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public RecognizerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public RecognizerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -46,6 +46,16 @@ public class RecognizerMenu extends AbstractContainerMenu {
     public boolean canCraft() {
         return this.blockEntity.isCraftable();
     }
+
+
+    public int getScaledProgress() {
+        int progress = this.blockEntity.getProgress();
+        int maxProgress = this.blockEntity.getMaxProgress();  // Max Progress
+        int progressArrowSize = 22; // This is the height in pixels of your arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    }
+
 
 
     private void addPlayerInventory(Inventory playerInventory) {
