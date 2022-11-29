@@ -50,6 +50,8 @@ public class ModItems {
 
     //Scroll EPIC
     public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(60,5).scrollType(ModEntityTypes.FIREBALL.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SCROLL_FIRE_SWORD = ITEMS_SCROLL_EPIC.register("scroll_fire_sword",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(200,195).scrollType(ModEntityTypes.FIRE_SWORD_RAIN.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
+
 
 
 

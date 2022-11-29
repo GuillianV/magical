@@ -1,0 +1,72 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.sword.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 720, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		},
+		"animation.fire_sword.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 720, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		},
+		"animation.fire_sword.summon": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 1,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 180]
+						},
+						"1.0": {
+							"vector": [0, 0, 180]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, -60, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [2, 2, 2]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

@@ -4,6 +4,8 @@ import com.guillianv.magical.Magical;
 import com.guillianv.magical.entity.spells.bottle.BottleEntity;
 import com.guillianv.magical.entity.spells.celestial_blessing.CelestialBlessingEntity;
 import com.guillianv.magical.entity.spells.earth_fist.EarthFistEntity;
+import com.guillianv.magical.entity.spells.fire_rain.FireRainEntity;
+import com.guillianv.magical.entity.spells.fire_sword.FireSwordEntity;
 import com.guillianv.magical.entity.spells.fireball.FireballEntity;
 import com.guillianv.magical.entity.spells.throwable_block.ThrowableBlockEntity;
 import com.guillianv.magical.entity.spells.thunder_strike.ThunderStrikeEntity;
@@ -53,6 +55,19 @@ public class ModEntityTypes  {
             ENTITY_TYPES.register("celestial_blessing",
                     () -> EntityType.Builder.of(CelestialBlessingEntity::new, MobCategory.MISC).fireImmune().sized(0.1f,0.1f)
                             .build(new ResourceLocation(Magical.MOD_ID, "celestial_blessing").toString()));
+
+
+    public static final RegistryObject<EntityType<FireSwordEntity>> FIRE_SWORD =
+            ENTITY_TYPES.register("fire_sword",
+                    () -> EntityType.Builder.of(FireSwordEntity::new, MobCategory.MISC).fireImmune().sized(1f,1f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "fire_sword").toString()));
+
+
+    public static final RegistryObject<EntityType<FireRainEntity>> FIRE_SWORD_RAIN =
+            ENTITY_TYPES.register("fire_sword_rain",
+                    () -> EntityType.Builder.of(FireRainEntity::new, MobCategory.MISC).fireImmune().sized(1f,1f)
+                            .build(new ResourceLocation(Magical.MOD_ID, "fire_sword_rain").toString()));
+
 
 
 

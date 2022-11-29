@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RecognizerBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Block.box(0,0,0,16,11,16);
+    private static final VoxelShape SHAPE = Block.box(0,0,0,16,12,16);
 
 
     @Override
