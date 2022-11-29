@@ -180,9 +180,6 @@ public class FireRainEntity  extends SpellEntity {
 
                }
 
-            }else {
-                this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.WEATHER, 2f, 0.8F + this.random.nextFloat() * 0.2F, false);
-
             }
 
         }

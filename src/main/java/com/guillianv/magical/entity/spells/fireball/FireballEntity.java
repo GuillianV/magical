@@ -101,10 +101,10 @@ public class FireballEntity extends SpellEntity {
         }
 
 
-        Entity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT,this,getX(),getY(),getZ(),getBoundingBox());
+        LivingEntity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT,this,getX(),getY(),getZ(),getBoundingBox());
         if (entity!=null){
             fireBallExplode(level);
-            entity.hurt(DamageSource.MAGIC,entityDamageDealth);
+            entity.hurt(DamageSource.explosion(entity),entityDamageDealth);
             return;
         }
 

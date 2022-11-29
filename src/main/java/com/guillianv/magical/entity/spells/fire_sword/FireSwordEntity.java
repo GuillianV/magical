@@ -106,6 +106,10 @@ public class FireSwordEntity extends LivingEntity implements IAnimatable {
 
             if (groundCheck > actualGroundCheck){
                 actualGroundCheck++;
+
+                this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.WEATHER, 0.5f, 0.8F + this.random.nextFloat() * 0.2F, false);
+
+
             }else {
 
                 if (!this.level.isClientSide()){
