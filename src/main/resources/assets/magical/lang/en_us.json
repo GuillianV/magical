@@ -14,6 +14,8 @@
   "block.magical.altar" : "Altar",
   "block.magical.recognizer_block" : "Recognizer",
 
+  "key.category.magical.menu": "Magical Menus",
+  "key.magical.open_magical_menu": "Magical Menu",
 
   "itemGroup.magical_tab": "Magical"
 }
