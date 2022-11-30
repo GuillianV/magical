@@ -16,6 +16,7 @@ import com.guillianv.magical.entity.spells.throwable_block.render.ThrowableBlock
 import com.guillianv.magical.entity.spells.thunder_strike.render.ThunderStrikeRenderer;
 import com.guillianv.magical.entity.spells.tornado.render.TornadoRenderer;
 import com.guillianv.magical.screen.AltarScreen;
+import com.guillianv.magical.screen.MagicalScreen;
 import com.guillianv.magical.screen.ModMenuTypes;
 import com.guillianv.magical.screen.RecognizerScreen;
 import com.guillianv.magical.util.KeyBinding;
@@ -56,6 +57,7 @@ public class ClientEvents {
             MenuScreens.register(ModMenuTypes.ALTAR_MENU.get(), AltarScreen::new);
             MenuScreens.register(ModMenuTypes.RECOGNIZER_MENU.get(), RecognizerScreen::new);
 
+
             EntityRenderers.register(ModEntityTypes.BOTTLE.get(), BottleRenderer::new);
             EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
             EntityRenderers.register(ModEntityTypes.THUNDER_STRIKE.get(), ThunderStrikeRenderer::new);
@@ -84,10 +86,9 @@ public class ClientEvents {
                 LocalPlayer player = Minecraft.getInstance().player;
                 Minecraft minecraft = Minecraft.getInstance();
 
-                minecraft.setScreen(new InventoryScreen(player));
+                minecraft.setScreen(new MagicalScreen(player));
 
 
-             //   NetworkHooks.openScreen(((ServerPlayer)pPlayer), (RecognizerBlockEntity)entity, pPos);
             }
         }
     }
