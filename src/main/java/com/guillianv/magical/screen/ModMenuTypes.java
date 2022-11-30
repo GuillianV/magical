@@ -19,6 +19,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<RecognizerMenu>> RECOGNIZER_MENU =
             registerMenuType(RecognizerMenu::new, "recognizer_menu");
 
+    public static final RegistryObject<MenuType<MagicalMenu>> MAGICAL_MENU =
+            registerMenuType(MagicalMenu::new, "magical_menu");
+
 
 
 

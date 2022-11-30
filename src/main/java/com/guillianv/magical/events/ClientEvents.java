@@ -57,7 +57,6 @@ public class ClientEvents {
             MenuScreens.register(ModMenuTypes.ALTAR_MENU.get(), AltarScreen::new);
             MenuScreens.register(ModMenuTypes.RECOGNIZER_MENU.get(), RecognizerScreen::new);
 
-
             EntityRenderers.register(ModEntityTypes.BOTTLE.get(), BottleRenderer::new);
             EntityRenderers.register(ModEntityTypes.FIREBALL.get(), FireballRenderer::new);
             EntityRenderers.register(ModEntityTypes.THUNDER_STRIKE.get(), ThunderStrikeRenderer::new);
