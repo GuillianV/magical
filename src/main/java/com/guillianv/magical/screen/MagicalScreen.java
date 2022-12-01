@@ -34,12 +34,23 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
     public static final ResourceLocation MAGICAL_GUI_TEXTURE = new ResourceLocation(Magical.MOD_ID,"textures/gui/container/magical.png");
 
+    private boolean scrolling;
 
+    private int scrollerTopXOffset = 175;
+    private int scrollerTopYOffset = 18;
+
+    private int scrollerMaxHeight = 124;
+
+    private int tabBarWidth = 12;
+    private int tabBarHeight = 15;
+
+    private int getTabBarYOffset = 0;
 
     public MagicalScreen(MagicalMenu magicalMenu,Inventory inventory, Component component ) {
         super(magicalMenu, inventory, component);
         this.passEvents = true;
         this.titleLabelX = 97;
+
     }
 
 
@@ -60,8 +71,10 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     @Override
     protected void init() {
 
-        imageHeight = 136;
-        imageWidth = 195;
+        this.imageHeight = 136;
+        this.imageWidth = 195;
+        this.leftPos = (this.width - this.imageWidth) / 2;
+        this.topPos = (this.height - this.imageHeight) / 2;
     }
 
     @Override
@@ -92,12 +105,71 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     }
 
 
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int id) {
 
+        if (id == 0) {
+            double posXInsideContainer = mouseX - (double)this.leftPos;
+            double posYInsideContainer = mouseY - (double)this.topPos;
+
+
+            if (this.insideScrollbar(posXInsideContainer, posYInsideContainer)) {
+                this.scrolling = true;
+                return true;
+            }
+
+        }
+
+        return super.mouseClicked(mouseX, mouseY, id);
+    }
+
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int p_97754_, double p_97755_, double p_97756_) {
+        if (this.scrolling){
+            double posXInsideContainer = mouseX - (double)this.leftPos;
+            double posYInsideContainer = mouseY - (double)this.topPos;
+
+
+            if (posYInsideContainer <= scrollerTopYOffset + tabBarHeight /2){
+                this.getTabBarYOffset = 0;
+            }else if (posYInsideContainer + tabBarHeight - tabBarHeight /2 >  scrollerMaxHeight  ){
+                this.getTabBarYOffset = scrollerMaxHeight - tabBarHeight - scrollerTopYOffset ;
+            }else {
+                this.getTabBarYOffset = (int) posYInsideContainer - scrollerTopYOffset - tabBarHeight /2 ;
+            }
+
+
+
+
+        } else {
+            return super.mouseDragged(mouseX, mouseY, p_97754_, p_97755_, p_97756_);
+        }
+        return super.mouseDragged(mouseX, mouseY, p_97754_, p_97755_, p_97756_);
+    }
+
+    @Override
+    public boolean mouseReleased(double p_97812_, double p_97813_, int p_97814_) {
+        this.scrolling = false;
+        return super.mouseReleased(p_97812_, p_97813_, p_97814_);
+    }
+
+    protected boolean insideScrollbar(double mouseX, double mouseY) {
+
+        int tabX0 = scrollerTopXOffset;
+        int tabY0 = scrollerTopYOffset;
+        int tabX1 = tabX0 + tabBarWidth ;
+        int tabY1 = tabY0 + tabBarHeight + getTabBarYOffset ;
+
+        return mouseX >= (double)tabX0 && mouseY >= (double)tabY0 && mouseX < (double)tabX1 && mouseY < (double)tabY1;
+    }
 
     protected void renderTabButton(PoseStack poseStack) {
-      /*
+
+
         RenderSystem.enableBlend(); //Forge: Make sure blend is enabled else tabs show a white border.
-        this.blit(poseStack, l, i1, j, k, 28, 32);
+        this.blit(poseStack, this.leftPos+this.scrollerTopXOffset, this.topPos+this.scrollerTopYOffset+this.getTabBarYOffset, 0, 136, tabBarWidth, tabBarHeight);
+/*
         this.itemRenderer.blitOffset = 100.0F;
 
         this.itemRenderer.renderAndDecorateItem(itemstack, l, i1);
