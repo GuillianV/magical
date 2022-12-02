@@ -3,6 +3,7 @@ package com.guillianv.magical.items.utils;
 import com.guillianv.magical.entity.spells.SpellEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 
 public class ScrollProperties extends Item.Properties {
 
@@ -11,6 +12,7 @@ public class ScrollProperties extends Item.Properties {
 
     protected EntityType<? extends SpellEntity> entityType;
 
+    protected Rarity defaultRarity = Rarity.COMMON;
 
     public ScrollProperties scrollType(EntityType<? extends SpellEntity> scrollType){
         this.entityType = scrollType;
@@ -27,6 +29,11 @@ public class ScrollProperties extends Item.Properties {
         }
     }
 
+    public ScrollProperties defaultRarity(Rarity rarity){
+        this.defaultRarity = rarity;
+        return this;
+    }
+
     public EntityType<? extends SpellEntity>  getEntityType(){
         return this.entityType;
     }
@@ -37,4 +44,9 @@ public class ScrollProperties extends Item.Properties {
     public int getCooldownModifier(){
         return this.cooldownModifier;
     }
+
+    public Rarity getDefaultRarity(){
+        return this.defaultRarity;
+    }
+
 }

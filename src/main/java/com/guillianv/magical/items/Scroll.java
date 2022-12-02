@@ -27,17 +27,21 @@ public class Scroll extends Item {
     public int baseCooldownTick;
     protected int cooldownModifier;
 
+    public Rarity defaultRarity;
+
     public final static String nbt_initialized = "Scroll_Initialized";
     public final static String nbt_revealed = "Scroll_Revealed";
     public final static String nbt_cooldown = "Scroll_Cooldown";
     public final static String nbt_entity_type = "Scroll_EntityType";
     public final static String nbt_rarity = "Scroll_Rarity";
 
+
     public Scroll(ScrollProperties properties) {
         super(properties);
         this.entityType = properties.getEntityType();
         this.baseCooldownTick = properties.getBaseCooldown();
         this.cooldownModifier = properties.getCooldownModifier();
+        this.defaultRarity = properties.getDefaultRarity();
     }
 
     public int getFinalCooldown(){
@@ -61,6 +65,11 @@ public class Scroll extends Item {
             itemStack.readShareTag(nbt);
         }
     }
+
+    public Rarity getDefaultRarity() {
+        return defaultRarity;
+    }
+
 
     public void reveal(ItemStack itemStack,boolean reveal){
         if (itemStack.hasTag() && itemStack.getShareTag().contains(nbt_initialized)){

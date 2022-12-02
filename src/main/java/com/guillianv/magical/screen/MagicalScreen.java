@@ -1,12 +1,16 @@
 package com.guillianv.magical.screen;
 
 import com.guillianv.magical.Magical;
+import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.items.ModItems;
+import com.guillianv.magical.items.Scroll;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -18,6 +22,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,7 +32,14 @@ import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
@@ -54,6 +66,12 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     private int spellContainerY = 18;
     private int spellContainersRows = 6;
 
+    private int maxSpells;
+
+
+    Scroll[] spells ;
+    private int maxIter;
+    private int iterEnCours =0;
 
     public MagicalScreen(MagicalMenu magicalMenu,Inventory inventory, Component component ) {
         super(magicalMenu, inventory, component);
@@ -84,6 +102,32 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
         this.imageWidth = 195;
         this.leftPos = (this.width - this.imageWidth) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
+        maxSpells =ModItems.ITEMS_SCROLL_COMMON.getEntries().size()+ ModItems.ITEMS_SCROLL_UNCOMMON.getEntries().size() + ModItems.ITEMS_SCROLL_RARE.getEntries().size() + ModItems.ITEMS_SCROLL_EPIC.getEntries().size();
+        spells = new Scroll[maxSpells];
+        int localSpellIndex = 0;
+
+        for (RegistryObject<Item> item : ModItems.ITEMS_SCROLL_COMMON.getEntries()) {
+            spells[localSpellIndex] = (Scroll) item.get();
+            localSpellIndex++;
+        }
+        for (RegistryObject<Item> item : ModItems.ITEMS_SCROLL_UNCOMMON.getEntries()) {
+            spells[localSpellIndex] = (Scroll) item.get();
+            localSpellIndex++;
+        }
+        for (RegistryObject<Item> item : ModItems.ITEMS_SCROLL_RARE.getEntries()) {
+            spells[localSpellIndex] = (Scroll) item.get();
+            localSpellIndex++;
+        }
+        for (RegistryObject<Item> item : ModItems.ITEMS_SCROLL_EPIC.getEntries()) {
+            spells[localSpellIndex] = (Scroll) item.get();
+            localSpellIndex++;
+        }
+
+
+        maxIter = maxSpells -spellContainersRows ;
+        if (maxIter <0) {
+            maxIter = 0;
+        }
     }
 
     @Override
@@ -113,11 +157,15 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
         this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
 
+        this.renderTabButton(poseStack);
         this.renderSpellContainer(poseStack,1);
         this.renderSpellContainer(poseStack,2);
         this.renderSpellContainer(poseStack,3);
+        this.renderSpellContainer(poseStack,4);
+        this.renderSpellContainer(poseStack,5);
+        this.renderSpellContainer(poseStack,6);
 
-        this.renderTabButton(poseStack);
+
     }
 
 
@@ -145,11 +193,14 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
         if (this.scrolling){
             double posYInsideContainer = mouseY - (double)this.topPos;
             if (posYInsideContainer <= scrollerTopY + tabBarHeight /2){
+                this.iterEnCours = 0;
                 this.scrollerOffset = 0;
             }else if (posYInsideContainer + tabBarHeight - tabBarHeight /2 >  scrollerMaxHeight  ){
                 this.scrollerOffset = scrollerMaxHeight - tabBarHeight - scrollerTopY ;
+                this.iterEnCours = maxIter;
             }else {
                 this.scrollerOffset = (int) posYInsideContainer - scrollerTopY - tabBarHeight /2 ;
+
             }
 
 
@@ -192,10 +243,24 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
 
     protected void renderSpellContainer(PoseStack poseStack,int row) {
-        RenderSystem.enableBlend();
 
-      //  this.renderTooltip(poseStack,Component.literal("sdq"), this.leftPos+this.spellContainerX, this.topPos+this.spellContainerY * row);
-        this.blit(poseStack, this.leftPos+this.spellContainerX, this.topPos+this.spellContainerY * row, 12, 136, spellContainerWidth, spellContainerHeight);
+        RenderSystem.enableBlend();
+        int spellIndex = row + iterEnCours -1;
+        if (spellIndex < spells.length  ){
+
+            RenderSystem.enableBlend();
+
+            Scroll scroll = spells[spellIndex];
+
+            SpellEntity spellEntity = scroll.entityType.create(this.minecraft.level);
+
+
+            this.blit(poseStack, this.leftPos+this.spellContainerX, (this.topPos+ this.spellContainerY * row), 12, 136, spellContainerWidth, spellContainerHeight);
+
+            this.font.draw(poseStack, Component.literal(spellEntity.spellDescription()).withStyle(scroll.getDefaultRarity().getStyleModifier()), this.leftPos+this.spellContainerX+3, this.topPos+this.spellContainerY * row +4, 4210751);
+
+        }
+
     }
 
 

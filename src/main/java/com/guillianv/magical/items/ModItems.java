@@ -34,23 +34,23 @@ public class ModItems {
 
 
     //Scroll COMMON
-    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(80,5).scrollType( ModEntityTypes.BOTTLE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
-    public static final RegistryObject<Item> TORNADO = ITEMS_SCROLL_COMMON.register("scroll_tornado",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(150,50).scrollType( ModEntityTypes.TORNADO.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> SCROLL_BOTTLE = ITEMS_SCROLL_COMMON.register("scroll_bottle",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.COMMON).baseCooldown(80,5).scrollType( ModEntityTypes.BOTTLE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> TORNADO = ITEMS_SCROLL_COMMON.register("scroll_tornado",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.COMMON).baseCooldown(150,50).scrollType( ModEntityTypes.TORNADO.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.COMMON)));
 
 
     //Scroll UNCOMMON
-    public static final RegistryObject<Item> SCROLL_EARTH_FIST = ITEMS_SCROLL_EPIC.register("scroll_earth_fist",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(150,15).scrollType(ModEntityTypes.EARTH_FIST.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> SCROLL_EARTH_FIST = ITEMS_SCROLL_UNCOMMON.register("scroll_earth_fist",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.UNCOMMON).baseCooldown(150,15).scrollType(ModEntityTypes.EARTH_FIST.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
 
 
 
     //Scroll RARE
-    public static final RegistryObject<Item> SCROLL_THUNDER_STRIKE = ITEMS_SCROLL_COMMON.register("scroll_thunder_strike",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(100,5).scrollType(ModEntityTypes.THUNDER_STRIKE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> CELESTIAL_BLESSING = ITEMS_SCROLL_COMMON.register("scroll_celestial_blessing",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(600,85).scrollType(ModEntityTypes.CELESTIAL_BLESSING.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> SCROLL_THUNDER_STRIKE = ITEMS_SCROLL_RARE.register("scroll_thunder_strike",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.RARE).baseCooldown(100,5).scrollType(ModEntityTypes.THUNDER_STRIKE.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> CELESTIAL_BLESSING = ITEMS_SCROLL_RARE.register("scroll_celestial_blessing",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.RARE).baseCooldown(600,85).scrollType(ModEntityTypes.CELESTIAL_BLESSING.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.RARE)));
 
 
     //Scroll EPIC
-    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(60,5).scrollType(ModEntityTypes.FIREBALL.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
-    public static final RegistryObject<Item> SCROLL_FIRE_SWORD = ITEMS_SCROLL_EPIC.register("scroll_fire_sword",() -> new Scroll((ScrollProperties) new ScrollProperties().baseCooldown(200,195).scrollType(ModEntityTypes.FIRE_SWORD_RAIN.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SCROLL_FIREBALL = ITEMS_SCROLL_EPIC.register("scroll_fireball",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.EPIC).baseCooldown(60,5).scrollType(ModEntityTypes.FIREBALL.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SCROLL_FIRE_SWORD = ITEMS_SCROLL_EPIC.register("scroll_fire_sword",() -> new Scroll((ScrollProperties) new ScrollProperties().defaultRarity(Rarity.EPIC).baseCooldown(200,195).scrollType(ModEntityTypes.FIRE_SWORD_RAIN.get()).tab(ModCreativeTabs.MAGICAL_TAB).stacksTo(1).rarity(Rarity.EPIC)));
 
 
 
