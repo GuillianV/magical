@@ -36,15 +36,24 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
     private boolean scrolling;
 
-    private int scrollerTopXOffset = 175;
-    private int scrollerTopYOffset = 18;
-
+    private int scrollerTopX = 175;
+    private int scrollerTopY = 18;
     private int scrollerMaxHeight = 124;
 
     private int tabBarWidth = 12;
     private int tabBarHeight = 15;
 
-    private int getTabBarYOffset = 0;
+    private int scrollerOffset = 0;
+
+
+    private int spellContainerWidth = 87;
+    private int spellContainerHeight = 16;
+
+
+    private int spellContainerX = 81;
+    private int spellContainerY = 18;
+    private int spellContainersRows = 6;
+
 
     public MagicalScreen(MagicalMenu magicalMenu,Inventory inventory, Component component ) {
         super(magicalMenu, inventory, component);
@@ -86,6 +95,7 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     public void render(PoseStack poseStack, int p_98876_, int p_98877_, float p_98878_) {
         this.renderBackground(poseStack);
 
+
         super.render(poseStack,p_98876_,p_98877_,p_98878_);
 
 
@@ -101,6 +111,12 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+
+
+        this.renderSpellContainer(poseStack,1);
+        this.renderSpellContainer(poseStack,2);
+        this.renderSpellContainer(poseStack,3);
+
         this.renderTabButton(poseStack);
     }
 
@@ -127,16 +143,13 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int p_97754_, double p_97755_, double p_97756_) {
         if (this.scrolling){
-            double posXInsideContainer = mouseX - (double)this.leftPos;
             double posYInsideContainer = mouseY - (double)this.topPos;
-
-
-            if (posYInsideContainer <= scrollerTopYOffset + tabBarHeight /2){
-                this.getTabBarYOffset = 0;
+            if (posYInsideContainer <= scrollerTopY + tabBarHeight /2){
+                this.scrollerOffset = 0;
             }else if (posYInsideContainer + tabBarHeight - tabBarHeight /2 >  scrollerMaxHeight  ){
-                this.getTabBarYOffset = scrollerMaxHeight - tabBarHeight - scrollerTopYOffset ;
+                this.scrollerOffset = scrollerMaxHeight - tabBarHeight - scrollerTopY ;
             }else {
-                this.getTabBarYOffset = (int) posYInsideContainer - scrollerTopYOffset - tabBarHeight /2 ;
+                this.scrollerOffset = (int) posYInsideContainer - scrollerTopY - tabBarHeight /2 ;
             }
 
 
@@ -156,10 +169,10 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
     protected boolean insideScrollbar(double mouseX, double mouseY) {
 
-        int tabX0 = scrollerTopXOffset;
-        int tabY0 = scrollerTopYOffset;
+        int tabX0 = scrollerTopX;
+        int tabY0 = scrollerTopY;
         int tabX1 = tabX0 + tabBarWidth ;
-        int tabY1 = tabY0 + tabBarHeight + getTabBarYOffset ;
+        int tabY1 = tabY0 + tabBarHeight + scrollerOffset ;
 
         return mouseX >= (double)tabX0 && mouseY >= (double)tabY0 && mouseX < (double)tabX1 && mouseY < (double)tabY1;
     }
@@ -168,7 +181,7 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
 
         RenderSystem.enableBlend(); //Forge: Make sure blend is enabled else tabs show a white border.
-        this.blit(poseStack, this.leftPos+this.scrollerTopXOffset, this.topPos+this.scrollerTopYOffset+this.getTabBarYOffset, 0, 136, tabBarWidth, tabBarHeight);
+        this.blit(poseStack, this.leftPos+this.scrollerTopX, this.topPos+this.scrollerTopY+this.scrollerOffset, 0, 136, tabBarWidth, tabBarHeight);
 /*
         this.itemRenderer.blitOffset = 100.0F;
 
@@ -177,6 +190,13 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
         this.itemRenderer.blitOffset = 0.0F;*/
     }
 
+
+    protected void renderSpellContainer(PoseStack poseStack,int row) {
+        RenderSystem.enableBlend();
+
+      //  this.renderTooltip(poseStack,Component.literal("sdq"), this.leftPos+this.spellContainerX, this.topPos+this.spellContainerY * row);
+        this.blit(poseStack, this.leftPos+this.spellContainerX, this.topPos+this.spellContainerY * row, 12, 136, spellContainerWidth, spellContainerHeight);
+    }
 
 
 }
