@@ -158,13 +158,8 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
 
         this.renderTabButton(poseStack);
-        this.renderSpellContainer(poseStack,1);
-        this.renderSpellContainer(poseStack,2);
-        this.renderSpellContainer(poseStack,3);
-        this.renderSpellContainer(poseStack,4);
-        this.renderSpellContainer(poseStack,5);
-        this.renderSpellContainer(poseStack,6);
-
+        this.renderSpellContainer(poseStack);
+        this.renderSpellFont(poseStack);
 
     }
 
@@ -229,39 +224,44 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     }
 
     protected void renderTabButton(PoseStack poseStack) {
-
-
         RenderSystem.enableBlend(); //Forge: Make sure blend is enabled else tabs show a white border.
         this.blit(poseStack, this.leftPos+this.scrollerTopX, this.topPos+this.scrollerTopY+this.scrollerOffset, 0, 136, tabBarWidth, tabBarHeight);
-/*
-        this.itemRenderer.blitOffset = 100.0F;
-
-        this.itemRenderer.renderAndDecorateItem(itemstack, l, i1);
-        this.itemRenderer.renderGuiItemDecorations(this.font, itemstack, l, i1);
-        this.itemRenderer.blitOffset = 0.0F;*/
     }
 
 
-    protected void renderSpellContainer(PoseStack poseStack,int row) {
+    protected void renderSpellContainer(PoseStack poseStack) {
 
-        RenderSystem.enableBlend();
-        int spellIndex = row + iterEnCours -1;
-        if (spellIndex < spells.length  ){
+        int row = 1;
+        while (row <= 6){
+            int spellIndex = row + iterEnCours -1;
+            if (spellIndex < spells.length  ){
+                this.blit(poseStack, this.leftPos+this.spellContainerX, (this.topPos+ this.spellContainerY * row), 12, 136, spellContainerWidth, spellContainerHeight);
 
-            RenderSystem.enableBlend();
+            }
 
-            Scroll scroll = spells[spellIndex];
+            row++;
+        }
+    }
 
-            SpellEntity spellEntity = scroll.entityType.create(this.minecraft.level);
 
+    protected void renderSpellFont(PoseStack poseStack){
 
-            this.blit(poseStack, this.leftPos+this.spellContainerX, (this.topPos+ this.spellContainerY * row), 12, 136, spellContainerWidth, spellContainerHeight);
+        int row = 1;
+        while (row <= 6){
 
-            this.font.draw(poseStack, Component.literal(spellEntity.spellDescription()).withStyle(scroll.getDefaultRarity().getStyleModifier()), this.leftPos+this.spellContainerX+3, this.topPos+this.spellContainerY * row +4, 4210751);
+            int spellIndex = row + iterEnCours -1;
+            if (spellIndex < spells.length  ){
+                Scroll scroll = spells[spellIndex];
+                SpellEntity spellEntity = scroll.entityType.create(this.minecraft.level);
+                this.font.draw(poseStack, Component.literal(spellEntity.spellDescription()).withStyle(scroll.getDefaultRarity().getStyleModifier()), this.leftPos+this.spellContainerX+3, this.topPos+this.spellContainerY * row +4, 4210751);
 
+            }
+
+            row++;
         }
 
-    }
 
+
+    }
 
 }
