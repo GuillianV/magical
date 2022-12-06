@@ -31,15 +31,18 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.RegistryObject;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
@@ -73,6 +76,11 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     private int maxIter;
     private int iterEnCours =0;
 
+    private double mouseX;
+    private double mouseY;
+
+    private int hoverRow = 0;
+
     public MagicalScreen(MagicalMenu magicalMenu,Inventory inventory, Component component ) {
         super(magicalMenu, inventory, component);
         this.passEvents = true;
@@ -81,8 +89,10 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
     }
 
 
+
+
     public MagicalScreen(Player player) {
-        super(ModMenuTypes.MAGICAL_MENU.get().create(0,player.getInventory()), player.getInventory(), Component.translatable("container.magical"));
+        super(ModMenuTypes.MAGICAL_MENU.get().create(0,player.getInventory()), player.getInventory(), Component.translatable("screen.container.magical"));
         this.passEvents = true;
         this.titleLabelX = 97;
     }
@@ -159,9 +169,11 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
         this.renderTabButton(poseStack);
         this.renderSpellContainer(poseStack);
+        this.renderSpellContainerHover(poseStack);
         this.renderSpellFont(poseStack);
 
     }
+
 
 
     @Override
@@ -241,6 +253,60 @@ public class MagicalScreen extends AbstractContainerScreen<MagicalMenu> {
 
             row++;
         }
+    }
+
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+
+
+        int row = 1;
+        while (row <= 6){
+
+            int x1 = (this.leftPos+this.spellContainerX);
+            int x2 = (this.leftPos+this.spellContainerX + spellContainerWidth);
+            int y1 =(this.topPos+this.spellContainerY * row);
+            int y2 =  (this.topPos+this.spellContainerY * row + spellContainerHeight);
+
+            if (this.isHovering(x1,y1,x2,y2,mouseX,mouseY)){
+                hoverRow = row;
+                this.mouseX = mouseX;
+                this.mouseY = mouseY;
+                super.mouseMoved(mouseX, mouseY);
+                return;
+            }
+
+            row++;
+        }
+
+        hoverRow = 0;
+        super.mouseMoved(mouseX, mouseY);
+    }
+
+    protected void renderSpellContainerHover(PoseStack poseStack) {
+
+       if (hoverRow != 0){
+
+           int spellIndex = hoverRow + iterEnCours -1;
+           if (spellIndex < spells.length  ){
+               Scroll scroll = spells[spellIndex];
+               SpellEntity spellEntity = scroll.entityType.create(this.minecraft.level);
+
+
+
+               List<Component> components = new ArrayList<Component>();
+               components.add(Component.literal(spellEntity.spellDescription()).withStyle(scroll.getDefaultRarity().getStyleModifier()));
+               components.add(Component.literal("Click on it to see more détails"));
+               this.renderTooltip(poseStack,components, Optional.empty(),(int)mouseX,(int)mouseY);
+
+           }
+       }
+    }
+    @Override
+    protected boolean isHovering(int x1, int y1, int x2, int y2, double mouseX, double mouseY) {
+        if ( mouseX >=x1 &&   mouseX <= x2 && mouseY >= y1 &&   mouseY <= y2 )
+            return true;
+
+        return false;
     }
 
 
