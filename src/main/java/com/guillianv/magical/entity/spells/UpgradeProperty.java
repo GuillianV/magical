@@ -10,13 +10,13 @@ public class UpgradeProperty {
     private ChatFormatting chatFormatting = ChatFormatting.WHITE;
     public int level;
     public double value;
+    public double upgradeValue;
     public boolean isTime = false;
 
-    public UpgradeProperty(TranslatableContents translatableContents,double defaultValue){
+    public UpgradeProperty(TranslatableContents translatableContents,double defaultValue,double upgradeValue){
         this.propertyName = translatableContents;
         this.level = 1;
         this.value = defaultValue;
-
     }
 
     public UpgradeProperty isTime(){
@@ -31,7 +31,7 @@ public class UpgradeProperty {
 
 
     public Component getPropertyComponent(){
-        return Component.literal(this.propertyName.toString() +" "+ value);
+        return Component.literal(this.propertyName.toString() +" "+ value).withStyle(this.chatFormatting);
     }
 
 }

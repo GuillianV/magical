@@ -1,14 +1,13 @@
 package com.guillianv.magical.entity.spells;
 
-public abstract class IUpgradable {
+import net.minecraft.network.chat.Component;
+
+import java.util.List;
+
+public interface IUpgradable {
 
 
-    public int level = 1;
+    void Upgrade();
 
-    public  void Upgrade(){
-        this.level++;
-
-    }
-
-    public
+    List<UpgradeProperty> ShowProperties();
 }

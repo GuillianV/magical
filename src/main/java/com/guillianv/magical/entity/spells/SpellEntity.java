@@ -20,9 +20,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
+public abstract class SpellEntity extends LivingEntity implements IAnimatable , IUpgradable   {
 
 
     //region properties and get/set
@@ -226,6 +228,17 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable  {
     }
 
 
+
+    @Override
+    public void Upgrade() {
+
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        return  new ArrayList<>();
+
+    }
 
     //endregion
 }

@@ -2,9 +2,12 @@ package com.guillianv.magical.entity.spells.thunder_strike;
 
 import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.ModEntityTypes;
+import com.guillianv.magical.entity.spells.IUpgradable;
 import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.entity.spells.UpgradeProperty;
 import com.guillianv.magical.entity.spells.thunder_strike.model.ThunderStrikeModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -18,8 +21,13 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ThunderStrikeEntity extends SpellEntity {
 
+
+    private UpgradeProperty damages = new UpgradeProperty(new TranslatableContents("entity_property.damages"),7d,1d) ;
 
     public ThunderStrikeEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -72,7 +80,7 @@ public class ThunderStrikeEntity extends SpellEntity {
             if (!level.isClientSide()){
                 LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT,level);
                 lightningBolt.setPos(this.position());
-                lightningBolt.setDamage(7);
+                lightningBolt.setDamage((float) damages.value);
                 level.addFreshEntity(lightningBolt);
             }
 
@@ -94,6 +102,21 @@ public class ThunderStrikeEntity extends SpellEntity {
         ResourceLocation resourceLocation = ModEntityTypes.THUNDER_STRIKE.getKey().location();
         return resourceLocation.toString();
     }
+
+
+    @Override
+    public void Upgrade() {
+        damages.value = damages.value + damages.upgradeValue;
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        List<UpgradeProperty> upgradeProperties = new ArrayList<>();
+        upgradeProperties.add(damages);
+        return upgradeProperties;
+
+    }
+
 
     //endregion
 }

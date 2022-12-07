@@ -2,11 +2,15 @@ package com.guillianv.magical.entity.spells.tornado;
 
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.entity.spells.IUpgradable;
+import com.guillianv.magical.entity.spells.UpgradeProperty;
 import com.guillianv.magical.entity.spells.throwable_block.ThrowableBlockEntity;
 import com.guillianv.magical.entity.spells.tornado.model.TornadoModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
@@ -26,12 +30,14 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class TornadoEntity extends SpellEntity {
 
-    private float speed = 0.5f;
+
+    private UpgradeProperty speed = new UpgradeProperty(new TranslatableContents("entity_property.speed"), 0.5d,0.1d);
 
     public TornadoEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -95,7 +101,7 @@ public class TornadoEntity extends SpellEntity {
             else if ( frontBlock != Blocks.AIR)
                 equalize = +0.4;
 
-        this.setPos(this.getX() + power.x * speed , this.getY() +  equalize , this.getZ() + power.z * speed);
+        this.setPos(this.getX() + power.x * speed.value  , this.getY() +  equalize , this.getZ() + power.z * speed.value );
 
         if (!level.isClientSide()){
 
@@ -107,7 +113,7 @@ public class TornadoEntity extends SpellEntity {
                 if (entity != getSenderLivingEntity())
                 {
                     entity.hurt(DamageSource.FALL,5);
-                    entity.setDeltaMovement(0,1f + speed/1.5f,0);
+                    entity.setDeltaMovement(0,1f + speed.value /1.5f,0);
                 }
 
             }
@@ -179,6 +185,19 @@ public class TornadoEntity extends SpellEntity {
     public String entityClassId() {
         ResourceLocation resourceLocation = ModEntityTypes.TORNADO.getKey().location();
         return resourceLocation.toString();
+    }
+
+    @Override
+    public void Upgrade() {
+        speed.value = speed.value + speed.upgradeValue;
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        List<UpgradeProperty> upgradeProperties = new ArrayList<>();
+        upgradeProperties.add(speed);
+        return upgradeProperties;
+
     }
 
     //endregion

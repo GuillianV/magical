@@ -1,10 +1,13 @@
 package com.guillianv.magical.entity.spells.fireball;
 
 import com.guillianv.magical.entity.ModEntityTypes;
+import com.guillianv.magical.entity.spells.IUpgradable;
 import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.entity.spells.UpgradeProperty;
 import com.guillianv.magical.entity.spells.fireball.model.FireballModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -17,18 +20,23 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FireballEntity extends SpellEntity {
 
+    private final UpgradeProperty damages = new UpgradeProperty(new TranslatableContents("entity_property.damages"),7d,1d) ;
+    private final UpgradeProperty speed = new UpgradeProperty(new TranslatableContents("entity_property.speed"),1d,0.1d) ;
 
-    private double speed = 1;
-    private float explosionRadius = 2f;
-    private float particlesSmokeRadius = 0.5f;
-    private float particlesSmokeRadiusPerTick = 0.5f;
-    private int particlesSmokeDuration = 1;
-    private float entityDamageDealth= 3;
-    private int expirationTime = 80;
+    private final UpgradeProperty explosionRadius = new UpgradeProperty(new TranslatableContents("entity_property.explosion_radius"),2d,1d) ;
+
+    private final UpgradeProperty expirationTime = new UpgradeProperty(new TranslatableContents("entity_property.expiration_time"),80d,10d) ;
+
+
+    private final float particlesSmokeRadius = 0.5f;
+    private final float particlesSmokeRadiusPerTick = 0.5f;
+    private final int particlesSmokeDuration = 1;
     private Random rand = new Random();
 
 
@@ -44,7 +52,7 @@ public class FireballEntity extends SpellEntity {
 
         LivingEntity livingEntity = getSenderLivingEntity();
         if (livingEntity != null){
-            level.explode(livingEntity, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(),explosionRadius,true, Explosion.BlockInteraction.BREAK);
+            level.explode(livingEntity, DamageSource.MAGIC, new  ExplosionDamageCalculator(),this.getX(),this.getY(),this.getZ(), (float) explosionRadius.value,true, Explosion.BlockInteraction.BREAK);
             this.remove(RemovalReason.DISCARDED);
         }else {
             this.remove(RemovalReason.UNLOADED_WITH_PLAYER);
@@ -104,13 +112,13 @@ public class FireballEntity extends SpellEntity {
         LivingEntity entity = level.getNearestEntity(LivingEntity.class, TargetingConditions.DEFAULT,this,getX(),getY(),getZ(),getBoundingBox());
         if (entity!=null){
             fireBallExplode(level);
-            entity.hurt(DamageSource.explosion(entity),entityDamageDealth);
+            entity.hurt(DamageSource.explosion(entity), (float) damages.value);
             return;
         }
 
 
-        this.setPos(this.getX() + this.getLookAngle().x * speed , this.getY() +  this.getLookAngle().y * speed, this.getZ() + this.getLookAngle().z * speed);
-        if (this.tickCount > expirationTime){
+        this.setPos(this.getX() + this.getLookAngle().x * speed.value , this.getY() +  this.getLookAngle().y * speed.value , this.getZ() + this.getLookAngle().z * speed.value );
+        if (this.tickCount > expirationTime.value){
             fireBallExplode(level);
             return;
         }
@@ -140,6 +148,27 @@ public class FireballEntity extends SpellEntity {
     public void onSpellAnimationEnd() {
 
     }
+
+
+    @Override
+    public void Upgrade() {
+        damages.value = damages.value + damages.upgradeValue;
+        speed.value = speed.value + speed.upgradeValue;
+        explosionRadius.value = explosionRadius.value + explosionRadius.upgradeValue;
+        expirationTime.value = expirationTime.value + expirationTime.upgradeValue;
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        List<UpgradeProperty> upgradeProperties = new ArrayList<>();
+        upgradeProperties.add(damages);
+        upgradeProperties.add(speed);
+        upgradeProperties.add(explosionRadius);
+        upgradeProperties.add(expirationTime);
+        return upgradeProperties;
+
+    }
+
 
     //endregion
 
