@@ -17,6 +17,7 @@ public class UpgradeProperty {
         this.propertyName = translatableContents;
         this.level = 1;
         this.value = defaultValue;
+        this.upgradeValue = upgradeValue;
     }
 
     public UpgradeProperty isTime(){

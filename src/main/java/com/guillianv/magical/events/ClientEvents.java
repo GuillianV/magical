@@ -5,6 +5,7 @@ import com.guillianv.magical.blocks.entity.ModBlockEntities;
 import com.guillianv.magical.blocks.entity.RecognizerBlockEntity;
 import com.guillianv.magical.blocks.render.AltarBlockRenderer;
 import com.guillianv.magical.blocks.render.RecognizerBlockRenderer;
+import com.guillianv.magical.capabilites.PlayerSpellsProvider;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.bottle.render.BottleRenderer;
 import com.guillianv.magical.entity.spells.celestial_blessing.render.CelestialBlessingRenderer;
@@ -26,12 +27,17 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -49,6 +55,8 @@ public class ClientEvents {
             event.registerBlockEntityRenderer(ModBlockEntities.ALTAR.get(), AltarBlockRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.RECOGNIZER.get(), RecognizerBlockRenderer::new);
         }
+
+
 
 
         @SubscribeEvent
@@ -76,6 +84,10 @@ public class ClientEvents {
     }
 
 
+
+
+
+
     @Mod.EventBusSubscriber(modid = Magical.MOD_ID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
         @SubscribeEvent
@@ -90,6 +102,7 @@ public class ClientEvents {
 
             }
         }
+
     }
 
 }

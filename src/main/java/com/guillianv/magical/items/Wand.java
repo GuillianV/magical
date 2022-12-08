@@ -1,5 +1,6 @@
 package com.guillianv.magical.items;
 
+import com.guillianv.magical.capabilites.PlayerSpellsProvider;
 import com.guillianv.magical.entity.spells.SpellEntity;
 import com.guillianv.magical.items.utils.ItemUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -56,6 +57,17 @@ public class Wand extends Item  {
 
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
+
+
+                        player.getCapability(PlayerSpellsProvider.PLAYER_SPELLS).ifPresent(spells -> {
+                           int spellLevel = spells.getSpellLevel("spell_fireball");
+                           spells.updateSpellLevel("spell_fireball",spellLevel+1);
+                            for (int i = 0; i < spellLevel; i++) {
+                                spellEntity.Upgrade();
+                            }
+
+                        });
+
                         level.addFreshEntity(spellEntity);
 
 
