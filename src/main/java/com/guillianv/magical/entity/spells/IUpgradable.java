@@ -7,7 +7,7 @@ import java.util.List;
 public interface IUpgradable {
 
 
-    void Upgrade();
+    void Upgrade(int level);
 
     List<UpgradeProperty> ShowProperties();
 }

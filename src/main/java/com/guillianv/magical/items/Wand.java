@@ -44,8 +44,6 @@ public class Wand extends Item  {
 
 
 
-
-        if (!level.isClientSide()){
                 ItemStack itemStack = player.getItemInHand(interactionHand);
                 CompoundTag compoundTag = itemStack.getShareTag();
                 if (itemStack.hasTag() && compoundTag.contains(Scroll.nbt_entity_type) && compoundTag.contains(Scroll.nbt_cooldown)){
@@ -55,22 +53,28 @@ public class Wand extends Item  {
                     if (typeOptional.isPresent()){
 
 
+
+
+
                         EntityType<? extends SpellEntity> spellEntityType = (EntityType<? extends SpellEntity>) typeOptional.get();
                         SpellEntity spellEntity = SpellEntity.create(spellEntityType,level,player);
 
 
+                        if (spellEntity == null)
+                            return InteractionResultHolder.pass(itemStack);
+
                         player.getCapability(PlayerSpellsProvider.PLAYER_SPELLS).ifPresent(spells -> {
-                           int spellLevel = spells.getSpellLevel("spell_fireball");
-                           spells.updateSpellLevel("spell_fireball",spellLevel+1);
-                            for (int i = 0; i < spellLevel; i++) {
-                                spellEntity.Upgrade();
-                            }
+
+                            int spellLevel = spells.getSpellLevel(spellEntity.nbtSpellKey);
+                            spells.updateSpellLevel(spellEntity.nbtSpellKey,spellLevel+1);
+                            spellEntity.setSpellLvl(spellLevel+1);
 
                         });
 
-                        level.addFreshEntity(spellEntity);
 
-
+                        if (!level.isClientSide()) {
+                            level.addFreshEntity(spellEntity);
+                        }
 
                         if (!player.isCreative()){
                             player.getCooldowns().addCooldown(ModItems.WAND_NORMAL.get(), getCoolDownReduced(itemStack));
@@ -83,7 +87,7 @@ public class Wand extends Item  {
                     }
                 }
 
-        }
+
 
 
         return super.use(level, player, interactionHand);

@@ -1,11 +1,14 @@
 package com.guillianv.magical.entity.spells;
 
+import com.guillianv.magical.capabilites.PlayerSpellsProvider;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -37,14 +40,18 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
 
     abstract public String entityClassId();
 
+    public String nbtSpellKey =  "spell_"+this.spellDescription().replaceAll(" ", "_");
+
     private static final EntityDataAccessor<Integer> DATA_SENDER_ID = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.INT);
 
     private static final EntityDataAccessor<Float> DATA_INITIAL_POS_X = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_INITIAL_POS_Y = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_INITIAL_POS_Z = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.FLOAT);
 
+    private static final EntityDataAccessor<Integer> DATA_SPELL_LVL = SynchedEntityData.defineId(SpellEntity.class, EntityDataSerializers.INT);
 
-    static float scale = 1f;
+
+    private UpgradeProperty scale = new UpgradeProperty(new TranslatableContents("entity_property.scale"), 1d,0.1d);
 
 
 
@@ -66,11 +73,11 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
 
     @Override
     public float getScale() {
-        return scale;
+        return (float) scale.value;
     }
 
     public void setScale(float scale) {
-        this.scale = scale;
+        this.scale = new UpgradeProperty(new TranslatableContents("entity_property.scale"), scale,0.1d);;
     }
 
     public void setSenderId(int entityId){
@@ -82,6 +89,13 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
     }
 
 
+    public void setSpellLvl(int lvl){
+        this.getEntityData().set(DATA_SPELL_LVL, lvl);
+    }
+
+    public int getSpellLvl(){
+        return this.getEntityData().get(DATA_SPELL_LVL);
+    }
 
 
 
@@ -111,12 +125,14 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
        spellEntity.setPos(position);
        spellEntity.setInitialPos(position);
        spellEntity.setRot(sender.getYRot(),sender.getXRot());
+
        if (spellEntity.Init())
            return spellEntity;
        else return null;
     }
 
     public boolean Init(){
+
         return true;
     }
 
@@ -153,6 +169,7 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
     @Override
     public void tick() {
 
+        this.Upgrade(this.getSpellLvl());
         if (this.tickCount >= animation().animationLength){
             this.onSpellAnimationEnd();
         }
@@ -166,6 +183,8 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
         this.getEntityData().define(DATA_INITIAL_POS_X, 0f);
         this.getEntityData().define(DATA_INITIAL_POS_Y, 0f);
         this.getEntityData().define(DATA_INITIAL_POS_Z, 0f);
+
+        this.getEntityData().define(DATA_SPELL_LVL, 1);
     }
 
 
@@ -230,8 +249,9 @@ public abstract class SpellEntity extends LivingEntity implements IAnimatable , 
 
 
     @Override
-    public void Upgrade() {
+    public void Upgrade(int level) {
 
+        this.scale.value =scale.defaultvalue + scale.upgradeValue * level;
     }
 
     @Override

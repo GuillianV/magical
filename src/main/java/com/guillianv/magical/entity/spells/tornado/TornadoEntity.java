@@ -86,6 +86,8 @@ public class TornadoEntity extends SpellEntity {
 
     @Override
     public void tick() {
+        Upgrade(getSpellLvl());
+
         double equalize = 0;
 
 
@@ -187,9 +189,13 @@ public class TornadoEntity extends SpellEntity {
         return resourceLocation.toString();
     }
 
+
     @Override
-    public void Upgrade() {
-        speed.value = speed.value + speed.upgradeValue;
+    public void Upgrade(int level) {
+        super.Upgrade(level);
+        speed.level = level;
+        speed.value =  speed.defaultvalue + speed.upgradeValue * level;
+
     }
 
     @Override

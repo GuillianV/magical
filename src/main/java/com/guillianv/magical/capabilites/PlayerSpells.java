@@ -8,6 +8,10 @@ public class PlayerSpells {
 
     CompoundTag playerSpells = new CompoundTag();
 
+    public void resetSpells() {
+        playerSpells = new CompoundTag();
+    }
+
     public int getSpellLevel(String spellKey){
         if (playerSpells.contains(spellKey)){
             return playerSpells.getInt(spellKey);

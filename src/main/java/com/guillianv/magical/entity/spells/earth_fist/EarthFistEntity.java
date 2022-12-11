@@ -3,10 +3,12 @@ package com.guillianv.magical.entity.spells.earth_fist;
 import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.entity.spells.UpgradeProperty;
 import com.guillianv.magical.entity.spells.earth_fist.model.EarthFistModel;
 import com.guillianv.magical.entity.spells.throwable_block.ThrowableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
@@ -25,17 +27,22 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class EarthFistEntity extends SpellEntity {
 
-    private int radius = 1;
 
-    private float maxProjection = 3f;
-    private float damage = 15f;
 
-    private float maxDamage = 20f;
+
+    private final UpgradeProperty damages = new UpgradeProperty(new TranslatableContents("entity_property.damages"),15d,1d) ;
+
+    private final UpgradeProperty maxDamages = new UpgradeProperty(new TranslatableContents("entity_property.max_damages"),20d,1d) ;
+    private final UpgradeProperty maxProjection = new UpgradeProperty(new TranslatableContents("entity_property.max_projection"),3d,0.1d) ;
+
+    private final UpgradeProperty effectRadius = new UpgradeProperty(new TranslatableContents("entity_property.effect_radius"),1d,1d) ;
+
 
     public EarthFistEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
@@ -79,7 +86,8 @@ public class EarthFistEntity extends SpellEntity {
         Vec3 position = new Vec3(lookPos.getX() +0.5,lookPos.getY() + 1,lookPos.getZ()+0.5);
         setPos(position);
 
-        earthShakeZ = -radius;
+        this.Upgrade(getSpellLvl());
+        earthShakeZ = (int) -effectRadius.value;
 
         this.setScale(2.5f);
 
@@ -101,7 +109,7 @@ public class EarthFistEntity extends SpellEntity {
             }
 
 
-            List<Entity> list1 = this.level.getEntities(this, new AABB(this.getX() - 2.0D, this.getY() - 2.0D, this.getZ() - 2.0D, this.getX() + 2.0D, this.getY() + 6.0D + 2.0D, this.getZ() + 2.0D), Entity::isAlive);
+            List<Entity> list1 = this.level.getEntities(this, new AABB(this.getX() - (this.effectRadius.value + this.getBbWidth()), this.getY() -(this.effectRadius.value + this.getBbWidth()), this.getZ() - (this.effectRadius.value + this.getBbWidth()), this.getX() + (this.effectRadius.value + this.getBbWidth()), this.getY() + 6.0D + (this.effectRadius.value + this.getBbWidth()), this.getZ() + (this.effectRadius.value + this.getBbWidth())), Entity::isAlive);
             for(Entity entity : list1) {
 
 
@@ -111,15 +119,15 @@ public class EarthFistEntity extends SpellEntity {
 
                 float ratio = 1/ dist;
 
-                float damages = ratio * damage;
-                if (damages > maxDamage)
-                    damages = maxDamage;
+                float damages = (float) (ratio * this.damages.value);
+                if (damages > maxDamages.value)
+                    damages = (float) maxDamages.value;
 
                 entity.hurt(DamageSource.ANVIL,damages);
 
                 float projection = ratio;
-                if (projection > this.maxProjection)
-                    projection = maxProjection;
+                if (projection > this.maxProjection.value)
+                    projection = (float) this.maxProjection.value;
 
 
 
@@ -128,11 +136,11 @@ public class EarthFistEntity extends SpellEntity {
 
         }
 
-        if (fisted && earthShakeZ <= radius && !level.isClientSide()){
+        if (fisted && earthShakeZ <= effectRadius.value && !level.isClientSide()){
 
 
-            int r = -radius;
-            while (r <= (radius)){
+            int r = (int) -effectRadius.value;
+            while (r <= (effectRadius.value)){
 
 
                 Vec3 pos = new Vec3(position().x + r,position().y-1,position().z + earthShakeZ);
@@ -185,6 +193,32 @@ public class EarthFistEntity extends SpellEntity {
         ResourceLocation resourceLocation = ModEntityTypes.EARTH_FIST.getKey().location();
         return resourceLocation.toString();
     }
+
+
+    @Override
+    public void Upgrade(int level) {
+        super.Upgrade(level);
+        damages.level = level;
+        damages.value = damages.defaultvalue + damages.upgradeValue * level;
+        maxDamages.level = level;
+        maxDamages.value = maxDamages.defaultvalue + maxDamages.upgradeValue * level;
+        effectRadius.level = level;
+        effectRadius.value = effectRadius.defaultvalue + effectRadius.upgradeValue * level;
+        maxProjection.level = level;
+        maxProjection.value = maxProjection.defaultvalue + maxProjection.upgradeValue * level;
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        List<UpgradeProperty> upgradeProperties = new ArrayList<>();
+        upgradeProperties.add(damages);
+        upgradeProperties.add(maxDamages);
+        upgradeProperties.add(effectRadius);
+        upgradeProperties.add(maxProjection);
+        return upgradeProperties;
+
+    }
+
 
     //endregion
 }

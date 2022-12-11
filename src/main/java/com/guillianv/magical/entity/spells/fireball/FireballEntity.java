@@ -1,5 +1,6 @@
 package com.guillianv.magical.entity.spells.fireball;
 
+import com.guillianv.magical.capabilites.PlayerSpellsProvider;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.IUpgradable;
 import com.guillianv.magical.entity.spells.SpellEntity;
@@ -12,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -100,6 +102,7 @@ public class FireballEntity extends SpellEntity {
     @Override
     public void tick() {
 
+        Upgrade(getSpellLvl());
         SpawnParticles();
 
         Block block = level.getBlockState(new BlockPos(this.position())).getBlock();
@@ -151,11 +154,16 @@ public class FireballEntity extends SpellEntity {
 
 
     @Override
-    public void Upgrade() {
-        damages.value = damages.value + damages.upgradeValue;
-        speed.value = speed.value + speed.upgradeValue;
-        explosionRadius.value = explosionRadius.value + explosionRadius.upgradeValue;
-        expirationTime.value = expirationTime.value + expirationTime.upgradeValue;
+    public void Upgrade(int level) {
+        super.Upgrade(level);
+        damages.level = level;
+        damages.value = damages.defaultvalue + damages.upgradeValue * level;
+        speed.level = level;
+        speed.value = speed.defaultvalue + speed.upgradeValue * level;
+        explosionRadius.level = level;
+        explosionRadius.value = explosionRadius.defaultvalue + explosionRadius.upgradeValue * level;
+        expirationTime.level = level;
+        expirationTime.value = expirationTime.defaultvalue + expirationTime.upgradeValue * level;
     }
 
     @Override

@@ -9,6 +9,8 @@ public class UpgradeProperty {
     private TranslatableContents propertyName;
     private ChatFormatting chatFormatting = ChatFormatting.WHITE;
     public int level;
+
+    public double defaultvalue;
     public double value;
     public double upgradeValue;
     public boolean isTime = false;
@@ -16,6 +18,7 @@ public class UpgradeProperty {
     public UpgradeProperty(TranslatableContents translatableContents,double defaultValue,double upgradeValue){
         this.propertyName = translatableContents;
         this.level = 1;
+        this.defaultvalue = defaultValue;
         this.value = defaultValue;
         this.upgradeValue = upgradeValue;
     }

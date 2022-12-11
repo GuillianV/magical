@@ -3,11 +3,13 @@ package com.guillianv.magical.entity.spells.fire_rain;
 import com.guillianv.magical.blocks.utils.BlockUtils;
 import com.guillianv.magical.entity.ModEntityTypes;
 import com.guillianv.magical.entity.spells.SpellEntity;
+import com.guillianv.magical.entity.spells.UpgradeProperty;
 import com.guillianv.magical.entity.spells.fire_rain.model.FireRainModel;
 import com.guillianv.magical.entity.spells.fire_sword.FireSwordEntity;
 import com.guillianv.magical.entity.spells.throwable_block.ThrowableBlockEntity;
 import com.guillianv.magical.entity.spells.throwable_block.model.ThrowableBlockModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -38,12 +40,18 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class FireRainEntity  extends SpellEntity {
 
 
-    private float damages = 9;
+
+
+    private final UpgradeProperty damages = new UpgradeProperty(new TranslatableContents("entity_property.damages"),9d,1d) ;
+
+    private final UpgradeProperty timeBetweenSummon = new UpgradeProperty(new TranslatableContents("entity_property.summon_delais"),3d,-1d) ;
 
 
     @Override
@@ -158,7 +166,9 @@ public class FireRainEntity  extends SpellEntity {
 
     @Override
     public void tick() {
-        if ( this.tickCount % 3 <= 1  ){
+        super.tick();
+
+        if ( this.tickCount % (int) timeBetweenSummon.value == 0  ){
 
 
             if (!this.level.isClientSide()){
@@ -171,7 +181,7 @@ public class FireRainEntity  extends SpellEntity {
                        FireSwordEntity fireSwordEntity = new FireSwordEntity(ModEntityTypes.FIRE_SWORD.get(),level);
                        fireSwordEntity.setPos( this.position().x + random.nextInt(20)-10,this.position().y +7 ,this.position().z +random.nextInt(20)-10);
                        fireSwordEntity.setDeltaMovement(0,-0.1f,0);
-                       fireSwordEntity.setDamages(7);
+                       fireSwordEntity.setDamages((float) damages.value);
                        fireSwordEntity.setRotation(0f,0f);
                        level.addFreshEntity(fireSwordEntity);
 
@@ -184,7 +194,25 @@ public class FireRainEntity  extends SpellEntity {
 
         }
 
-        super.tick();
+
+    }
+
+
+    @Override
+    public void Upgrade(int level) {
+        super.Upgrade(level);
+        damages.level = level;
+        damages.value = damages.defaultvalue + damages.upgradeValue * level;
+        timeBetweenSummon.level = level;
+        timeBetweenSummon.value = timeBetweenSummon.defaultvalue + timeBetweenSummon.upgradeValue * level;
+    }
+
+    @Override
+    public List<UpgradeProperty> ShowProperties() {
+        List<UpgradeProperty> upgradeProperties = new ArrayList<>();
+        upgradeProperties.add(damages);
+        return upgradeProperties;
+
     }
 
 

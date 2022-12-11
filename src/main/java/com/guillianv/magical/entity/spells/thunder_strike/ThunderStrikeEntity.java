@@ -105,8 +105,10 @@ public class ThunderStrikeEntity extends SpellEntity {
 
 
     @Override
-    public void Upgrade() {
-        damages.value = damages.value + damages.upgradeValue;
+    public void Upgrade(int level) {
+        super.Upgrade(level);
+        damages.level = level;
+        damages.value = damages.defaultvalue + damages.upgradeValue * level;
     }
 
     @Override
